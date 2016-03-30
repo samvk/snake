@@ -105,7 +105,7 @@ $(document).click(function () {
 	}
 });
 
-function setBody(){
+/*function setBody(){
 	var $tail = $(".tail");
 	$tail.each(function(i,e){
 		var $self = $(e);
@@ -144,16 +144,13 @@ function setBody(){
 				break;
 		}
 	});
-}
-
-
-
+}*/
 
 /**************** init ******************/
 
 function gameplay() {
 	headMove();
-	setBody();
+	//setBody();
 	
 }
 
