@@ -1,0 +1,25 @@
+@import "compass/reset";
+
+#box {
+	position: relative;
+	background-color: darkslategrey;
+	margin-top: 50px;
+	margin-left: 50px;
+	width: 500px;
+	height: 500px;
+}
+
+.belly {
+	position: absolute;
+	background-color: white;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+}
+
+.apple {
+	position: absolute;
+	background-color: mediumvioletred;
+	width: 10px;
+	height: 10px;
+}
