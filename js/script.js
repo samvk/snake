@@ -67,9 +67,9 @@ function headMove() {
 
 /**************** Moving the tail *******************/
 
-function setTail(){
+function setTail() {
 	var $tail = $(".tail");
-	$tail.each(function(i,e){
+	$tail.each(function (i, e) {
 		var $self = $(e);
 		var $prevBelly = $self.prev();
 		var newDirection = $prevBelly.data("turn") || $self.data("direction");
@@ -110,12 +110,11 @@ function setTail(){
 
 //reverse array so the loop doesn't trigger ALL of them.
 function setTurn() {
-	$($(".tail").get().reverse()).each(function(i,e){
+	$($(".tail").get().reverse()).each(function (i, e) {
 		var $self = $(e);
 		var $prevBelly = $self.prev();
-		if ($prevBelly.data("turn")){
+		if ($prevBelly.data("turn")) {
 			var prevTurn = $prevBelly.data("turn");
-			console.log(prevTurn);
 			$self.data("turn", prevTurn);
 			$prevBelly.removeData("turn");
 		}
@@ -130,14 +129,13 @@ function randomApple() {
 	function range() {
 		return Math.round((Math.floor(Math.random() * (boxSize - bellySize)) / 10)) * 10;
 	}
-	console.log(range);
 	$(".apple").css({
 		"top": range(),
 		"left": range()
 	});
 }
 
-/**************** New belly *******************/
+/**************** Add Tail *******************/
 function addTail() {
 	var $oldLastBelly = $(".belly").last();
 	$oldLastBelly.after("<div class='belly tail'></div>");
@@ -178,25 +176,73 @@ function addTail() {
 	}
 }
 
+/**************** Check if on an apple **************/
+
+var headPosTop;
+var headPosLeft;
+var applePosTop;
+var applePosLeft;
+
+function getPositions() {
+	headPosTop = parseInt($(".head").css("top"));
+	headPosLeft = parseInt($(".head").css("left"));
+	applePosTop = parseInt($(".apple").css("top"));
+	applePosLeft = parseInt($(".apple").css("left"));
+}
+
+function appleChecker() {
+	if (headPosTop === applePosTop && headPosLeft === applePosLeft) {
+		randomApple();
+		addTail();
+	}
+}
+
+/********************* Game over ********************/
+
+function gameOver(message) {
+	alert("You lose!\n" + message);
+	$(".belly").remove();
+	$("#box").append("<div class='belly head'></div>");
+	headDirection = "down";
+	//gameplay();
+}
+
+//check if out of bounds
+
+function checkBounds() {
+	if (headPosTop < 0 || headPosLeft < 0 || headPosTop > (boxSize - bellySize) || headPosLeft > (boxSize - bellySize)) {
+		gameOver("Out of bounds.");
+	}
+}
+
+function checkTouch() {
+	
+}
+
 /**************** init ******************/
 
 function gameplay() {
 	headMove();
+	getPositions();
+	appleChecker();
 	setTail();
 	setTurn();
-	
+	checkBounds();
+	checkTouch();
 }
 
-setInterval(gameplay, 200);
+setInterval(gameplay, 150);
+
+$(document).ready(function () {
+	randomApple();
+});
+
+
 
 
 
 //temporary tester
-$(document).click(function() {
+$(document).click(function () {
 	randomApple();
 	addTail();
-});
-
-$(document).ready(function(){
-	randomApple();
 });

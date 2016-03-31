@@ -65,7 +65,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 
 .belly {
   position: absolute;
-  background-color: white;
+  background-color: pink;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -73,9 +73,10 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 
 .apple {
   position: absolute;
-  background-color: mediumvioletred;
+  background-color: red;
   width: 10px;
   height: 10px;
+  border-radius: 10%;
 }
 
 /*# sourceMappingURL=style.css.map */
