@@ -31,7 +31,6 @@ $(document).keydown(function (key) {
 });
 
 function headMove() {
-	//var direction = headDirection;
 	switch (headDirection) {
 		case "up":
 			$(".head").css({
@@ -148,8 +147,9 @@ function setBody(){
 	});
 }
 
-function turning() {
-	$(".tail").each(function(i,e){
+//reverse array so the loop doesn't trigger ALL of them.
+function setTurn() {
+	$($(".tail").get().reverse()).each(function(i,e){
 		var $self = $(e);
 		var $prevBelly = $self.prev();
 		if ($prevBelly.data("turn")){
@@ -165,8 +165,8 @@ function turning() {
 
 function gameplay() {
 	headMove();
-	//setBody();
-	//turning();
+	setBody();
+	setTurn();
 	
 }
 
