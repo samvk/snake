@@ -4,8 +4,9 @@
 
 /*********************** Globals ********************/
 var bellySize = parseInt($(".belly").css("width"));
+var boxSize = parseInt($("#box").css("width"));
 
-/*********************** Moving the snake ********************/
+/*********************** Moving the head ********************/
 
 var headDirection = "down";
 
@@ -30,6 +31,7 @@ $(document).keydown(function (key) {
 	}
 });
 
+/************************* Saving the head current and turn direction ******************/
 function headMove() {
 	switch (headDirection) {
 		case "up":
@@ -63,50 +65,9 @@ function headMove() {
 	}
 }
 
-/**************** New belly *******************/
+/**************** Moving the tail *******************/
 
-
-$(document).click(function () {
-	var $oldLastBelly = $(".belly").last();
-	$oldLastBelly.after("<div class='belly tail'></div>");
-	var $newBelly = $(".belly").last();
-
-	var oldDirection = $oldLastBelly.data("direction");
-	var oldTop = parseInt($oldLastBelly.css("top"));
-	var oldLeft = parseInt($oldLastBelly.css("left"));
-	switch (oldDirection) {
-		case "up":
-			$newBelly.css({
-				"top": oldTop + bellySize,
-				"left": oldLeft
-			});
-			$newBelly.data("direction", oldDirection);
-			break;
-		case "down":
-			$newBelly.css({
-				"top": oldTop - bellySize,
-				"left": oldLeft
-			});
-			$newBelly.data("direction", oldDirection);
-			break;
-		case "left":
-			$newBelly.css({
-				"top": oldTop,
-				"left": oldLeft + bellySize
-			});
-			$newBelly.data("direction", oldDirection);
-			break;
-		case "right":
-			$newBelly.css({
-				"top": oldTop,
-				"left": oldLeft - bellySize
-			});
-			$newBelly.data("direction", oldDirection);
-			break;
-	}
-});
-
-function setBody(){
+function setTail(){
 	var $tail = $(".tail");
 	$tail.each(function(i,e){
 		var $self = $(e);
@@ -161,13 +122,81 @@ function setTurn() {
 	});
 }
 
+/**************** Eating an apple *******************/
+
+/**************** Move apple ******************/
+
+function randomApple() {
+	function range() {
+		return Math.round((Math.floor(Math.random() * (boxSize - bellySize)) / 10)) * 10;
+	}
+	console.log(range);
+	$(".apple").css({
+		"top": range(),
+		"left": range()
+	});
+}
+
+/**************** New belly *******************/
+function addTail() {
+	var $oldLastBelly = $(".belly").last();
+	$oldLastBelly.after("<div class='belly tail'></div>");
+	var $newBelly = $(".belly").last();
+
+	var oldDirection = $oldLastBelly.data("direction");
+	var oldTop = parseInt($oldLastBelly.css("top"));
+	var oldLeft = parseInt($oldLastBelly.css("left"));
+	switch (oldDirection) {
+		case "up":
+			$newBelly.css({
+				"top": oldTop + bellySize,
+				"left": oldLeft
+			});
+			$newBelly.data("direction", oldDirection);
+			break;
+		case "down":
+			$newBelly.css({
+				"top": oldTop - bellySize,
+				"left": oldLeft
+			});
+			$newBelly.data("direction", oldDirection);
+			break;
+		case "left":
+			$newBelly.css({
+				"top": oldTop,
+				"left": oldLeft + bellySize
+			});
+			$newBelly.data("direction", oldDirection);
+			break;
+		case "right":
+			$newBelly.css({
+				"top": oldTop,
+				"left": oldLeft - bellySize
+			});
+			$newBelly.data("direction", oldDirection);
+			break;
+	}
+}
+
 /**************** init ******************/
 
 function gameplay() {
 	headMove();
-	setBody();
+	setTail();
 	setTurn();
 	
 }
 
 setInterval(gameplay, 200);
+
+
+
+//temporary tester
+$(document).click(function() {
+	randomApple();
+	addTail();
+});
+
+$(document).ready(function(){
+	randomApple();
+});
