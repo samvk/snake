@@ -1,6 +1,6 @@
 /*jslint vars: true plusplus: true */
 /*jshint esversion: 6*/
-/*global $, document, Image, window, setTimeout, setInterval, clearInterval, console*/
+/*global $, document, Image, window, setTimeout, setInterval, clearInterval*/
 
 /*********************** Globals ********************/
 var bellySize = parseInt($(".belly").css("width"));
@@ -38,26 +38,28 @@ function headMove() {
 				"top": `-=${bellySize}px`
 			});
 			$(".head").data("direction", headDirection);
+			$(".head").data("turn", headDirection);
 			break;
 		case "down":
 			$(".head").css({
 				"top": `+=${bellySize}px`
 			});
 			$(".head").data("direction", headDirection);
+			$(".head").data("turn", headDirection);
 			break;
 		case "left":
 			$(".head").css({
 				"left": `-=${bellySize}px`
 			});
 			$(".head").data("direction", headDirection);
-			console.log($(".head").data("direction"));
+			$(".head").data("turn", headDirection);
 			break;
 		case "right":
 			$(".head").css({
 				"left": `+=${bellySize}px`
 			});
 			$(".head").data("direction", headDirection);
-			console.log($(".head").data("direction"));
+			$(".head").data("turn", headDirection);
 			break;
 	}
 }
@@ -105,52 +107,66 @@ $(document).click(function () {
 	}
 });
 
-/*function setBody(){
+function setBody(){
 	var $tail = $(".tail");
 	$tail.each(function(i,e){
 		var $self = $(e);
 		var $prevBelly = $self.prev();
-		var oldDirection = $prevBelly.data("direction");
+		var newDirection = $prevBelly.data("turn") || $self.data("direction");
 		var oldTop = parseInt($prevBelly.css("top"));
 		var oldLeft = parseInt($prevBelly.css("left"));
-		switch (oldDirection) {
+		switch (newDirection) {
 			case "up":
 				$self.css({
 					"top": oldTop + bellySize,
 					"left": oldLeft
 				});
-				$self.data("direction", oldDirection);
+				//$self.data("direction", newDirection);
 				break;
 			case "down":
 				$self.css({
 					"top": oldTop - bellySize,
 					"left": oldLeft
 				});
-				$self.data("direction", oldDirection);
+				//$self.data("direction", newDirection);
 				break;
 			case "left":
 				$self.css({
 					"top": oldTop,
 					"left": oldLeft + bellySize
 				});
-				$self.data("direction", oldDirection);
+				//$self.data("direction", newDirection);
 				break;
 			case "right":
 				$self.css({
 					"top": oldTop,
 					"left": oldLeft - bellySize
 				});
-				$self.data("direction", oldDirection);
+				//$self.data("direction", newDirection);
 				break;
 		}
 	});
-}*/
+}
+
+function turning() {
+	$(".tail").each(function(i,e){
+		var $self = $(e);
+		var $prevBelly = $self.prev();
+		if ($prevBelly.data("turn")){
+			var prevTurn = $prevBelly.data("turn");
+			console.log(prevTurn);
+			$self.data("turn", prevTurn);
+			$prevBelly.removeData("turn");
+		}
+	});
+}
 
 /**************** init ******************/
 
 function gameplay() {
 	headMove();
 	//setBody();
+	//turning();
 	
 }
 
