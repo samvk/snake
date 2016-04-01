@@ -2,12 +2,43 @@
 /*jshint esversion: 6*/
 /*global $, document, Image, window, setTimeout, setInterval, clearInterval, alert*/
 
+/*************** High Score cookies **************/
+
+function setCookie(cname, cvalue, exdays) {
+	exdays = exdays || 365;
+	const d = new Date();
+	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+	const expires = "expires=" + d.toUTCString();
+	document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+	const name = cname + "=";
+	const ca = document.cookie.split(';');
+	for (let i = 0; i < ca.length; i++) {
+		let c = ca[i];
+		while (c.charAt(0) === " ") {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) === 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return "";
+}
+
 /*********************** Globals ********************/
 var bellySize = parseInt($(".belly").css("width"));
 var boxSize = parseInt($("#box").css("width"));
 var tailPosArray = [];
 
 var highscore = 0;
+var bestscore = getCookie("bestscore") || 0;
+
+function setScores() {
+	$(".highscore").text("Highscore: " + highscore);
+	$(".bestscore").text("Best score: " + bestscore);
+}
 
 /*********************** Moving the head ********************/
 
@@ -207,9 +238,15 @@ function appleChecker() {
 
 var GameOverCheck = (function () {
 	function gameOver(message) {
+		//set new highscore
+		if (highscore > bestscore) {
+			bestscore = highscore;
+			setCookie("bestscore", highscore);
+		}
+		console.log(bestscore);
 		alert("You lose. " + message + "\nYour score: " + highscore);
 		highscore = 0;
-		$(".highscore").text("Highscore: " + highscore);
+		setScores();
 		$(".belly").remove();
 		$("#box").append("<div class='belly head'></div>");
 		headDirection = "down";
@@ -263,8 +300,8 @@ $(document).ready(function () {
 	//randomApple();
 	//eatApple();
 	//eatApple();
-	$(".highscore").text("Highscore: " + highscore);
-
+	setScores();
+	console.log(bestscore);
 	setInterval(gameplay, 100);
 });
 

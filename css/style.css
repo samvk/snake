@@ -70,10 +70,14 @@ html {
 }
 
 #highscore-box {
-  font: 12px 'Press Start 2P', cursive;
+  font: 11px 'Press Start 2P', cursive;
   width: 360px;
   margin-top: 5px;
-  margin-left: 50px;
+  margin-left: 55px;
+}
+#highscore-box p {
+  width: 180px;
+  float: left;
 }
 
 .belly {
