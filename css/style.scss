@@ -1,6 +1,6 @@
 @import "compass/reset";
 
-$boxSize: 500px;
+$boxSize: 360px;
 
 html{
 	background-color: #F8F8F8;
@@ -38,9 +38,6 @@ html{
 	width: 10px;
 	height: 10px;
 	border-radius: 10%;
-}
-
-[data-turn="right"] {
-	//background-color: aquamarine;
-	//border-radius: 0%;
+	top: 90px;
+	left: 20px;
 }

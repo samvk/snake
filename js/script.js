@@ -206,7 +206,7 @@ function appleChecker() {
 /********************* Game over ********************/
 
 function gameOver(message) {
-	alert("You lose.\n" + message);
+	alert("You lose. " + message + "\nYour score: " + highscore);
 	highscore = 0;
 	$(".highscore").text("Highscore: " + highscore);
 	$(".belly").remove();
@@ -249,19 +249,20 @@ function gameplay() {
 	checkTouch();
 }
 
-setInterval(gameplay, 100);
+
 
 $(document).ready(function () {
-	randomApple();
+	//randomApple();
+    //eatApple();
+    //eatApple();
 	$(".highscore").text("Highscore: " + highscore);
+	
+	setInterval(gameplay, 100);
 });
 
 
 
-
-
 //temporary tester
-$(document).click(function () {
-	randomApple();
-	addTail();
+$(document).dblclick(function () {
+    eatApple();
 });

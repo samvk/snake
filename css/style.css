@@ -65,13 +65,13 @@ html {
   margin: 0 auto;
   margin-top: 50px;
   margin-left: 50px;
-  width: 500px;
-  height: 500px;
+  width: 360px;
+  height: 360px;
 }
 
 #highscore-box {
   font: 12px 'Press Start 2P', cursive;
-  width: 500px;
+  width: 360px;
   margin-top: 5px;
   margin-left: 50px;
 }
@@ -90,6 +90,8 @@ html {
   width: 10px;
   height: 10px;
   border-radius: 10%;
+  top: 90px;
+  left: 20px;
 }
 
 /*# sourceMappingURL=style.css.map */
