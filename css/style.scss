@@ -1,17 +1,32 @@
 @import "compass/reset";
 
+$boxSize: 500px;
+
+html{
+	background-color: #F8F8F8;
+}
+
 #box {
 	position: relative;
+	overflow: hidden;
 	background-color: darkslategrey;
+	margin: 0 auto;
 	margin-top: 50px;
 	margin-left: 50px;
-	width: 500px;
-	height: 500px;
+	width: $boxSize;
+	height: $boxSize;
+}
+
+#highscore-box {
+	font: 12px 'Press Start 2P', cursive;
+	width: $boxSize;
+	margin-top: 5px;
+	margin-left: 50px;
 }
 
 .belly {
 	position: absolute;
-	background-color: pink;
+	background-color: white;
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
@@ -23,4 +38,9 @@
 	width: 10px;
 	height: 10px;
 	border-radius: 10%;
+}
+
+[data-turn="right"] {
+	//background-color: aquamarine;
+	//border-radius: 0%;
 }

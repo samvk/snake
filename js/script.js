@@ -1,10 +1,13 @@
 /*jslint vars: true plusplus: true */
 /*jshint esversion: 6*/
-/*global $, document, Image, window, setTimeout, setInterval, clearInterval*/
+/*global $, document, Image, window, setTimeout, setInterval, clearInterval, alert*/
 
 /*********************** Globals ********************/
 var bellySize = parseInt($(".belly").css("width"));
 var boxSize = parseInt($("#box").css("width"));
+var tailPosArray = [];
+
+var highscore = 0;
 
 /*********************** Moving the head ********************/
 
@@ -33,36 +36,41 @@ $(document).keydown(function (key) {
 
 /************************* Saving the head current and turn direction ******************/
 function headMove() {
+	var $head = $(".head");
+
+	var oldHeadTop = $head.css("top");
+	var oldHeadLeft = $head.css("left");
 	switch (headDirection) {
 		case "up":
-			$(".head").css({
+			$head.css({
 				"top": `-=${bellySize}px`
 			});
-			$(".head").data("direction", headDirection);
-			$(".head").data("turn", headDirection);
+			$head.data("turn", headDirection);
 			break;
 		case "down":
-			$(".head").css({
+			$head.css({
 				"top": `+=${bellySize}px`
 			});
-			$(".head").data("direction", headDirection);
-			$(".head").data("turn", headDirection);
+			$head.data("turn", headDirection);
 			break;
 		case "left":
-			$(".head").css({
+			$head.css({
 				"left": `-=${bellySize}px`
 			});
-			$(".head").data("direction", headDirection);
-			$(".head").data("turn", headDirection);
+			$head.data("turn", headDirection);
 			break;
 		case "right":
-			$(".head").css({
+			$head.css({
 				"left": `+=${bellySize}px`
 			});
-			$(".head").data("direction", headDirection);
-			$(".head").data("turn", headDirection);
+			$head.data("turn", headDirection);
 			break;
 	}
+
+
+	tailPosArray.push([oldHeadTop, oldHeadLeft]);
+	tailPosArray.shift();
+
 }
 
 /**************** Moving the tail *******************/
@@ -81,28 +89,24 @@ function setTail() {
 					"top": oldTop + bellySize,
 					"left": oldLeft
 				});
-				//$self.data("direction", newDirection);
 				break;
 			case "down":
 				$self.css({
 					"top": oldTop - bellySize,
 					"left": oldLeft
 				});
-				//$self.data("direction", newDirection);
 				break;
 			case "left":
 				$self.css({
 					"top": oldTop,
 					"left": oldLeft + bellySize
 				});
-				//$self.data("direction", newDirection);
 				break;
 			case "right":
 				$self.css({
 					"top": oldTop,
 					"left": oldLeft - bellySize
 				});
-				//$self.data("direction", newDirection);
 				break;
 		}
 	});
@@ -113,17 +117,14 @@ function setTurn() {
 	$($(".tail").get().reverse()).each(function (i, e) {
 		var $self = $(e);
 		var $prevBelly = $self.prev();
-		if ($prevBelly.data("turn")) {
-			var prevTurn = $prevBelly.data("turn");
-			$self.data("turn", prevTurn);
-			$prevBelly.removeData("turn");
-		}
+		var prevTurn = $prevBelly.data("turn");
+		$self.data("turn", prevTurn);
 	});
 }
 
 /**************** Eating an apple *******************/
 
-/**************** Move apple ******************/
+/****************** Move apple *********************/
 
 function randomApple() {
 	function range() {
@@ -139,41 +140,47 @@ function randomApple() {
 function addTail() {
 	var $oldLastBelly = $(".belly").last();
 	$oldLastBelly.after("<div class='belly tail'></div>");
-	var $newBelly = $(".belly").last();
+	var $newTail = $(".belly").last();
 
-	var oldDirection = $oldLastBelly.data("direction");
+	var oldDirection = $oldLastBelly.data("turn");
 	var oldTop = parseInt($oldLastBelly.css("top"));
 	var oldLeft = parseInt($oldLastBelly.css("left"));
 	switch (oldDirection) {
 		case "up":
-			$newBelly.css({
+			$newTail.css({
 				"top": oldTop + bellySize,
 				"left": oldLeft
 			});
-			$newBelly.data("direction", oldDirection);
 			break;
 		case "down":
-			$newBelly.css({
+			$newTail.css({
 				"top": oldTop - bellySize,
 				"left": oldLeft
 			});
-			$newBelly.data("direction", oldDirection);
 			break;
 		case "left":
-			$newBelly.css({
+			$newTail.css({
 				"top": oldTop,
 				"left": oldLeft + bellySize
 			});
-			$newBelly.data("direction", oldDirection);
 			break;
 		case "right":
-			$newBelly.css({
+			$newTail.css({
 				"top": oldTop,
 				"left": oldLeft - bellySize
 			});
-			$newBelly.data("direction", oldDirection);
 			break;
 	}
+	var tailTop = $newTail.css("top");
+	var tailLeft = $newTail.css("left");
+	tailPosArray.unshift([tailTop, tailLeft]);
+}
+
+function eatApple() {
+	randomApple();
+	addTail();
+	highscore += 10;
+	$(".highscore").text("Highscore: " + highscore);
 }
 
 /**************** Check if on an apple **************/
@@ -192,31 +199,41 @@ function getPositions() {
 
 function appleChecker() {
 	if (headPosTop === applePosTop && headPosLeft === applePosLeft) {
-		randomApple();
-		addTail();
+		eatApple();
 	}
 }
 
 /********************* Game over ********************/
 
 function gameOver(message) {
-	alert("You lose!\n" + message);
+	alert("You lose.\n" + message);
+	highscore = 0;
+	$(".highscore").text("Highscore: " + highscore);
 	$(".belly").remove();
 	$("#box").append("<div class='belly head'></div>");
 	headDirection = "down";
-	//gameplay();
+	tailPosArray = [];	
 }
 
 //check if out of bounds
 
 function checkBounds() {
 	if (headPosTop < 0 || headPosLeft < 0 || headPosTop > (boxSize - bellySize) || headPosLeft > (boxSize - bellySize)) {
-		gameOver("Out of bounds.");
+		gameOver("Out of bounds!");
 	}
 }
 
 function checkTouch() {
-	
+	var headTop = $(".head").css("top");
+	var headLeft = $(".head").css("left");
+	var headPosArray = [headTop, headLeft];
+	for (var i = 0; i < tailPosArray.length; i++) {
+		if (headPosArray.join() === tailPosArray[i].join()) {
+			gameOver("Stop hitting yourself!");
+			return;
+		}
+	}
+
 }
 
 /**************** init ******************/
@@ -224,6 +241,7 @@ function checkTouch() {
 function gameplay() {
 	headMove();
 	getPositions();
+	checkTouch();
 	appleChecker();
 	setTail();
 	setTurn();
@@ -231,10 +249,11 @@ function gameplay() {
 	checkTouch();
 }
 
-setInterval(gameplay, 150);
+setInterval(gameplay, 100);
 
 $(document).ready(function () {
 	randomApple();
+	$(".highscore").text("Highscore: " + highscore);
 });
 
 
