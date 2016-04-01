@@ -68,7 +68,7 @@ function headMove() {
 	}
 
 
-	tailPosArray.push([oldHeadTop, oldHeadLeft]);
+	tailPosArray.push(oldHeadTop + oldHeadLeft);
 	tailPosArray.shift();
 
 }
@@ -173,7 +173,7 @@ function addTail() {
 	}
 	var tailTop = $newTail.css("top");
 	var tailLeft = $newTail.css("left");
-	tailPosArray.unshift([tailTop, tailLeft]);
+	tailPosArray.unshift(tailTop + tailLeft);
 }
 
 function eatApple() {
@@ -205,58 +205,66 @@ function appleChecker() {
 
 /********************* Game over ********************/
 
-function gameOver(message) {
-	alert("You lose. " + message + "\nYour score: " + highscore);
-	highscore = 0;
-	$(".highscore").text("Highscore: " + highscore);
-	$(".belly").remove();
-	$("#box").append("<div class='belly head'></div>");
-	headDirection = "down";
-	tailPosArray = [];	
-}
-
-//check if out of bounds
-
-function checkBounds() {
-	if (headPosTop < 0 || headPosLeft < 0 || headPosTop > (boxSize - bellySize) || headPosLeft > (boxSize - bellySize)) {
-		gameOver("Out of bounds!");
+var GameOverCheck = (function () {
+	function gameOver(message) {
+		alert("You lose. " + message + "\nYour score: " + highscore);
+		highscore = 0;
+		$(".highscore").text("Highscore: " + highscore);
+		$(".belly").remove();
+		$("#box").append("<div class='belly head'></div>");
+		headDirection = "down";
+		tailPosArray = [];
 	}
-}
 
-function checkTouch() {
-	var headTop = $(".head").css("top");
-	var headLeft = $(".head").css("left");
-	var headPosArray = [headTop, headLeft];
-	for (var i = 0; i < tailPosArray.length; i++) {
-		if (headPosArray.join() === tailPosArray[i].join()) {
-			gameOver("Stop hitting yourself!");
-			return;
+	//check if out of bounds
+	function checkBounds() {
+		if (headPosTop < 0 || headPosLeft < 0 || headPosTop > (boxSize - bellySize) || headPosLeft > (boxSize - bellySize)) {
+			gameOver("Out of bounds!");
 		}
 	}
 
-}
+	//check if touching itself
+	function checkTouch() {
+		var headTop = $(".head").css("top");
+		var headLeft = $(".head").css("left");
+		var headPos = headTop + headLeft;
+		for (var i = 0; i < tailPosArray.length; i++) {
+			if (headPos === tailPosArray[i]) {
+				gameOver("Stop hitting yourself!");
+				return;
+			}
+		}
+
+	}
+
+	return {
+		init: function () {
+			checkBounds();
+			checkTouch();
+		}
+	};
+}());
+
 
 /**************** init ******************/
 
 function gameplay() {
 	headMove();
 	getPositions();
-	checkTouch();
 	appleChecker();
 	setTail();
 	setTurn();
-	checkBounds();
-	checkTouch();
+	GameOverCheck.init();
 }
 
 
 
 $(document).ready(function () {
 	//randomApple();
-    //eatApple();
-    //eatApple();
+	//eatApple();
+	//eatApple();
 	$(".highscore").text("Highscore: " + highscore);
-	
+
 	setInterval(gameplay, 100);
 });
 
@@ -264,5 +272,5 @@ $(document).ready(function () {
 
 //temporary tester
 $(document).dblclick(function () {
-    eatApple();
+	eatApple();
 });
