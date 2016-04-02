@@ -299,3 +299,9 @@ $(document).ready(function () {
 	$(".bestscore").text(bestscore);
 	setInterval(gameplay, 100);
 });
+
+
+
+$(document).dblclick(function(){
+	appleChecker.init();
+});
