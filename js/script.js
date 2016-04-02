@@ -10,7 +10,6 @@ var boxSize = parseInt($("#box").css("width"));
 var tailPosArray = [];
 
 var highscore = 0;
-
 var bestscore = (function () {
 	//get cookie
 	var name = "bestscore=";
@@ -38,10 +37,6 @@ function GetPositions() {
 
 /*********************** Moving the head ********************/
 
-$(document).keydown(function (key) {
-	moveHead.setDirection(key);
-});
-
 var moveHead = {
 	headDirection: "down",
 	setDirection: function (inputKey) {
@@ -52,6 +47,7 @@ var moveHead = {
 				break;
 			case 40: //"down"
 			case 98:
+			case 101:
 				this.headDirection = "down";
 				break;
 			case 37: //"left"
@@ -100,6 +96,10 @@ var moveHead = {
 		tailPosArray.shift();
 	}
 };
+
+$(document).keydown(function (key) {
+	moveHead.setDirection(key);
+});
 
 /**************** Moving the tail *******************/
 var moveTail = {
@@ -158,16 +158,6 @@ var moveTail = {
 /**************** Eating an apple *******************/
 
 var appleChecker = (function () {
-	function randomApple() {
-		function range() {
-			return Math.round((Math.floor(Math.random() * (boxSize - bellySize)) / 10)) * 10;
-		}
-		$(".apple").css({
-			"top": range(),
-			"left": range()
-		});
-	}
-
 	function addTail() {
 		var $oldLastBelly = $(".belly").last();
 		$oldLastBelly.after("<div class='belly tail'></div>");
@@ -205,6 +195,16 @@ var appleChecker = (function () {
 		var tailTop = $newTail.css("top");
 		var tailLeft = $newTail.css("left");
 		tailPosArray.unshift(tailTop + tailLeft);
+	}
+	
+	function randomApple() {
+		function range() {
+			return Math.round((Math.floor(Math.random() * (boxSize - bellySize)) / 10)) * 10;
+		}
+		$(".apple").css({
+			"top": range(),
+			"left": range()
+		});
 	}
 
 	function eatApple() {
