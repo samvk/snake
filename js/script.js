@@ -27,6 +27,15 @@ var bestscore = (function () {
 	return 0;
 }());
 
+/******************** Get snake positions ******************/
+
+function GetPositions() {
+	this.headTop = parseInt($(".head").css("top"));
+	this.headLeft = parseInt($(".head").css("left"));
+	this.appleTop = parseInt($(".apple").css("top"));
+	this.appleLeft = parseInt($(".apple").css("left"));
+}
+
 /*********************** Moving the head ********************/
 
 $(document).keydown(function (key) {
@@ -207,26 +216,13 @@ var appleChecker = (function () {
 
 	return {
 		init: function () {
-			if (headPosTop === applePosTop && headPosLeft === applePosLeft) {
+			var position = new GetPositions();
+			if (position.headTop === position.appleTop && position.headLeft === position.appleLeft) {
 				eatApple();
 			}
 		}
 	};
 }());
-
-/**************** Check if on an apple **************/
-
-var headPosTop;
-var headPosLeft;
-var applePosTop;
-var applePosLeft;
-
-function getPositions() {
-	headPosTop = parseInt($(".head").css("top"));
-	headPosLeft = parseInt($(".head").css("left"));
-	applePosTop = parseInt($(".apple").css("top"));
-	applePosLeft = parseInt($(".apple").css("left"));
-}
 
 /********************* Game over ********************/
 
@@ -260,7 +256,9 @@ var GameOverCheck = (function () {
 
 	//check if out of bounds
 	function checkBounds() {
-		if (headPosTop < 0 || headPosLeft < 0 || headPosTop > (boxSize - bellySize) || headPosLeft > (boxSize - bellySize)) {
+		//position();
+		var position = new GetPositions();
+		if (position.headTop < 0 || position.headLeft < 0 || position.headTop > (boxSize - bellySize) || position.headLeft > (boxSize - bellySize)) {
 			gameOver("Out of bounds!");
 		}
 	}
@@ -292,7 +290,6 @@ var GameOverCheck = (function () {
 
 function gameplay() {
 	moveHead.init();
-	getPositions();
 	appleChecker.init();
 	moveTail.init();
 	GameOverCheck.init();
