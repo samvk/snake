@@ -305,8 +305,9 @@ $(document).ready(function () {
 		eatAppleCheck.init();
 		gameOverCheck.init();
 	}
-
-	$(".bestscore").text(bestscore);
+    
+    setInterval(gameplay, 100);
 	
-	setInterval(gameplay, 100);
+    $(".bestscore").text(bestscore);
+    
 });
