@@ -2,18 +2,18 @@
 /*jshint esversion: 6*/
 /*global $, document, Image, window, setTimeout, setInterval, clearInterval, alert*/
 
-/*************** High Score cookies **************/
+/*********************** Globals ********************/
 
-function setCookie(cname, cvalue, exdays) {
-	exdays = exdays || 365;
-	var d = new Date();
-	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-	var expires = "expires=" + d.toUTCString();
-	document.cookie = cname + "=" + cvalue + "; " + expires;
-}
+var bellySize = parseInt($(".belly").css("width"));
+var boxSize = parseInt($("#box").css("width"));
 
-function getCookie(cname) {
-	var name = cname + "=";
+var tailPosArray = [];
+
+var highscore = 0;
+
+var bestscore = (function () {
+	//get cookie
+	var name = "bestscore=";
 	var ca = document.cookie.split(';');
 	for (let i = 0; i < ca.length; i++) {
 		let c = ca[i];
@@ -24,138 +24,131 @@ function getCookie(cname) {
 			return c.substring(name.length, c.length);
 		}
 	}
-	return "";
-}
-
-/*********************** Globals ********************/
-
-var bellySize = parseInt($(".belly").css("width"));
-var boxSize = parseInt($("#box").css("width"));
-
-var tailPosArray = [];
-
-var highscore = 0;
-var bestscore = getCookie("bestscore") || 0;
-
-function setScores() {
-	$(".highscore").text("Highscore: " + highscore);
-	$(".bestscore").text("Best score: " + bestscore);
-}
+	return 0;
+}());
 
 /*********************** Moving the head ********************/
 
-var headDirection = "down";
-
 $(document).keydown(function (key) {
-	switch (parseInt(key.which, 10)) {
-		case 38: //"up"
-		case 104:
-			headDirection = "up";
-			break;
-		case 40: //"down"
-		case 98:
-			headDirection = "down";
-			break;
-		case 37: //"left"
-		case 100:
-			headDirection = "left";
-			break;
-		case 39: //"right"
-		case 102:
-			headDirection = "right";
-			break;
-	}
+	moveHead.setDirection(key);
 });
 
-/************************* Saving the head current and turn direction ******************/
-function headMove() {
-	var $head = $(".head");
-
-	var oldHeadTop = $head.css("top");
-	var oldHeadLeft = $head.css("left");
-	switch (headDirection) {
-		case "up":
-			$head.css({
-				"top": `-=${bellySize}px`
-			});
-			$head.data("turn", headDirection);
-			break;
-		case "down":
-			$head.css({
-				"top": `+=${bellySize}px`
-			});
-			$head.data("turn", headDirection);
-			break;
-		case "left":
-			$head.css({
-				"left": `-=${bellySize}px`
-			});
-			$head.data("turn", headDirection);
-			break;
-		case "right":
-			$head.css({
-				"left": `+=${bellySize}px`
-			});
-			$head.data("turn", headDirection);
-			break;
-	}
-	tailPosArray.push(oldHeadTop + oldHeadLeft);
-	tailPosArray.shift();
-
-}
-
-/**************** Moving the tail *******************/
-
-function setTail() {
-	var $tail = $(".tail");
-	$tail.each(function (i, e) {
-		var $self = $(e);
-		var $prevBelly = $self.prev();
-		var newDirection = $prevBelly.data("turn") || $self.data("direction");
-		var oldTop = parseInt($prevBelly.css("top"));
-		var oldLeft = parseInt($prevBelly.css("left"));
-		switch (newDirection) {
-			case "up":
-				$self.css({
-					"top": oldTop + bellySize,
-					"left": oldLeft
-				});
+var moveHead = {
+	headDirection: "down",
+	setDirection: function (inputKey) {
+		switch (parseInt(inputKey.which, 10)) {
+			case 38: //"up"
+			case 104:
+				this.headDirection = "up";
 				break;
-			case "down":
-				$self.css({
-					"top": oldTop - bellySize,
-					"left": oldLeft
-				});
+			case 40: //"down"
+			case 98:
+				this.headDirection = "down";
 				break;
-			case "left":
-				$self.css({
-					"top": oldTop,
-					"left": oldLeft + bellySize
-				});
+			case 37: //"left"
+			case 100:
+				this.headDirection = "left";
 				break;
-			case "right":
-				$self.css({
-					"top": oldTop,
-					"left": oldLeft - bellySize
-				});
+			case 39: //"right"
+			case 102:
+				this.headDirection = "right";
 				break;
 		}
-	});
-}
+	},
 
-//reverse array so the loop doesn't trigger ALL of them.
-function setTurn() {
-	$($(".tail").get().reverse()).each(function (i, e) {
-		var $self = $(e);
-		var $prevBelly = $self.prev();
-		var prevTurn = $prevBelly.data("turn");
-		$self.data("turn", prevTurn);
-	});
-}
+	// Saving the head turn direction
+	init: function () {
+		var $head = $(".head");
+		var oldHeadTop = $head.css("top");
+		var oldHeadLeft = $head.css("left");
+		switch (this.headDirection) {
+			case "up":
+				$head.css({
+					"top": `-=${bellySize}px`
+				});
+				$head.data("turn", this.headDirection);
+				break;
+			case "down":
+				$head.css({
+					"top": `+=${bellySize}px`
+				});
+				$head.data("turn", this.headDirection);
+				break;
+			case "left":
+				$head.css({
+					"left": `-=${bellySize}px`
+				});
+				$head.data("turn", this.headDirection);
+				break;
+			case "right":
+				$head.css({
+					"left": `+=${bellySize}px`
+				});
+				$head.data("turn", this.headDirection);
+				break;
+		}
+		tailPosArray.push(oldHeadTop + oldHeadLeft);
+		tailPosArray.shift();
+	}
+};
+
+/**************** Moving the tail *******************/
+var moveTail = {
+	setTail: function () {
+		$(".tail").each(function (i, e) {
+			var $self = $(e);
+			var $prevBelly = $self.prev();
+			var newDirection = $prevBelly.data("turn");
+			var oldTop = parseInt($prevBelly.css("top"));
+			var oldLeft = parseInt($prevBelly.css("left"));
+			switch (newDirection) {
+				case "up":
+					$self.css({
+						"top": oldTop + bellySize,
+						"left": oldLeft
+					});
+					break;
+				case "down":
+					$self.css({
+						"top": oldTop - bellySize,
+						"left": oldLeft
+					});
+					break;
+				case "left":
+					$self.css({
+						"top": oldTop,
+						"left": oldLeft + bellySize
+					});
+					break;
+				case "right":
+					$self.css({
+						"top": oldTop,
+						"left": oldLeft - bellySize
+					});
+					break;
+			}
+		});
+	},
+
+	//reverse array so the loop doesn't trigger ALL of them.
+	setTurn: function () {
+		$($(".tail").get().reverse()).each(function (i, e) {
+			var $self = $(e);
+			var $prevBelly = $self.prev();
+			var prevTurn = $prevBelly.data("turn");
+			$self.data("turn", prevTurn);
+		});
+	},
+	
+	init: function(){
+		this.setTail();
+		this.setTurn();
+	}
+};
 
 /**************** Eating an apple *******************/
 
-var appleChecker = (function(){
+var appleChecker = (function () {
 	function randomApple() {
 		function range() {
 			return Math.round((Math.floor(Math.random() * (boxSize - bellySize)) / 10)) * 10;
@@ -165,6 +158,7 @@ var appleChecker = (function(){
 			"left": range()
 		});
 	}
+
 	function addTail() {
 		var $oldLastBelly = $(".belly").last();
 		$oldLastBelly.after("<div class='belly tail'></div>");
@@ -203,15 +197,16 @@ var appleChecker = (function(){
 		var tailLeft = $newTail.css("left");
 		tailPosArray.unshift(tailTop + tailLeft);
 	}
+
 	function eatApple() {
 		randomApple();
 		addTail();
 		highscore += 10;
-		$(".highscore").text("Highscore: " + highscore);
+		$(".highscore").text(highscore);
 	}
-	
+
 	return {
-		init: function() {
+		init: function () {
 			if (headPosTop === applePosTop && headPosLeft === applePosLeft) {
 				eatApple();
 			}
@@ -236,18 +231,30 @@ function getPositions() {
 /********************* Game over ********************/
 
 var GameOverCheck = (function () {
+	function setBestscoreCookie(cname, cvalue) {
+		var d = new Date();
+		d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+		var expires = "expires=" + d.toUTCString();
+		document.cookie = cname + "=" + cvalue + "; " + expires;
+	}
+
+	function setScores() {
+		$(".highscore").text(highscore);
+		$(".bestscore").text(bestscore);
+	}
+
 	function gameOver(message) {
 		//set new highscore
 		if (highscore > bestscore) {
 			bestscore = highscore;
-			setCookie("bestscore", highscore);
+			setBestscoreCookie("bestscore", highscore);
 		}
 		alert("You lose. " + message + "\nYour score: " + highscore);
 		highscore = 0;
 		setScores();
 		$(".belly").remove();
 		$("#box").append("<div class='belly head'></div>");
-		headDirection = "down";
+		moveHead.headDirection = "down";
 		tailPosArray = [];
 	}
 
@@ -284,15 +291,14 @@ var GameOverCheck = (function () {
 /**************** init ******************/
 
 function gameplay() {
-	headMove();
+	moveHead.init();
 	getPositions();
 	appleChecker.init();
-	setTail();
-	setTurn();
+	moveTail.init();
 	GameOverCheck.init();
 }
 
 $(document).ready(function () {
-	setScores();
+	$(".bestscore").text(bestscore);
 	setInterval(gameplay, 100);
 });
