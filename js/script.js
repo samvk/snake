@@ -1,4 +1,3 @@
-/*jslint vars: true plusplus: true */
 /*jshint esversion: 6*/
 /*global $, document, Image, window, setTimeout, setInterval, clearInterval, alert*/
 
@@ -14,8 +13,8 @@ var bestscore = (function () {
 	//get cookie
 	var name = "bestscore=";
 	var ca = document.cookie.split(';');
-	for (let i = 0; i < ca.length; i++) {
-		let c = ca[i];
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
 		while (c.charAt(0) === " ") {
 			c = c.substring(1);
 		}
@@ -33,6 +32,8 @@ function GetPositions() {
 	this.headLeft = parseInt($(".head").css("left"));
 	this.appleTop = parseInt($(".apple").css("top"));
 	this.appleLeft = parseInt($(".apple").css("left"));
+	this.tailTop = parseInt($(".snake").last().css("left"));
+	this.tailLeft = parseInt($(".snake").last().css("right"));
 }
 
 /*********************** Moving the head ********************/
@@ -67,7 +68,7 @@ var moveHead = {
 		bellyPosArray.shift();
 	},
 
-	// Saving the head turn direction
+	// Saving the head direction
 	init: function () {
 		this.pushBelly();
 		
@@ -77,25 +78,25 @@ var moveHead = {
 				$head.css({
 					"top": `-=${snakeSize}px`
 				});
-				$head.data("turn", this.headDirection);
+				$head.data("direction", this.headDirection);
 				break;
 			case "down":
 				$head.css({
 					"top": `+=${snakeSize}px`
 				});
-				$head.data("turn", this.headDirection);
+				$head.data("direction", this.headDirection);
 				break;
 			case "left":
 				$head.css({
 					"left": `-=${snakeSize}px`
 				});
-				$head.data("turn", this.headDirection);
+				$head.data("direction", this.headDirection);
 				break;
 			case "right":
 				$head.css({
 					"left": `+=${snakeSize}px`
 				});
-				$head.data("turn", this.headDirection);
+				$head.data("direction", this.headDirection);
 				break;
 		}
 	}
@@ -106,12 +107,12 @@ $(document).keydown(function (key) {
 });
 
 /**************** Moving the belly *******************/
-var movebelly = {
-	setbelly: function () {
+var moveBelly = {
+	moveEachBelly: function () {
 		$(".belly").each(function (i, e) {
 			var $self = $(e);
 			var $prevsnake = $self.prev();
-			var newDirection = $prevsnake.data("turn");
+			var newDirection = $prevsnake.data("direction");
 			var oldTop = parseInt($prevsnake.css("top"));
 			var oldLeft = parseInt($prevsnake.css("left"));
 			switch (newDirection) {
@@ -144,30 +145,35 @@ var movebelly = {
 	},
 
 	//reverse array so the loop doesn't trigger ALL of them.
-	setTurn: function () {
+	setNewDirection: function () {
 		$($(".belly").get().reverse()).each(function (i, e) {
 			var $self = $(e);
 			var $prevsnake = $self.prev();
-			var prevTurn = $prevsnake.data("turn");
-			$self.data("turn", prevTurn);
+			var prevDirection = $prevsnake.data("direction");
+			$self.data("direction", prevDirection);
 		});
 	},
 	
 	init: function(){
-		this.setbelly();
-		this.setTurn();
+		this.moveEachBelly();
+		this.setNewDirection();
 	}
 };
 
 /**************** Eating an apple *******************/
 
 var eatAppleCheck = (function () {
+	function pushTail() {
+		var position = new GetPositions();
+		bellyPosArray.unshift([position.tailTop, position.tailLeft]);
+	}
+	
 	function addTail() {
 		var $oldSnakeTail = $(".snake").last();
 		$oldSnakeTail.after("<div class='snake belly'></div>");
 		var $newTail = $(".snake").last();
 
-		var tailDirection = $oldSnakeTail.data("turn");
+		var tailDirection = $oldSnakeTail.data("direction");
 		var oldTop = parseInt($oldSnakeTail.css("top"));
 		var oldLeft = parseInt($oldSnakeTail.css("left"));
 		switch (tailDirection) {
@@ -196,9 +202,7 @@ var eatAppleCheck = (function () {
 				});
 				break;
 		}
-		var tailTop = $newTail.css("top");
-		var tailLeft = $newTail.css("left");
-		bellyPosArray.unshift(tailTop + tailLeft);
+		pushTail();
 	}
 	
 	function randomApple() {
@@ -230,7 +234,7 @@ var eatAppleCheck = (function () {
 
 /********************* Game over ********************/
 
-var GameOverCheck = (function () {
+var gameOverCheck = (function () {
 	function setBestscoreCookie(cname, cvalue) {
 		var d = new Date();
 		d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
@@ -292,9 +296,9 @@ var GameOverCheck = (function () {
 
 function gameplay() {
 	moveHead.init();
-	movebelly.init();
+	moveBelly.init();
 	eatAppleCheck.init();
-	GameOverCheck.init();
+	gameOverCheck.init();
 }
 
 $(document).ready(function () {
