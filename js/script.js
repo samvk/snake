@@ -285,7 +285,6 @@ var GameOverCheck = (function () {
 	};
 }());
 
-
 /**************** init ******************/
 
 function gameplay() {
@@ -298,10 +297,4 @@ function gameplay() {
 $(document).ready(function () {
 	$(".bestscore").text(bestscore);
 	setInterval(gameplay, 100);
-});
-
-
-
-$(document).dblclick(function(){
-	appleChecker.init();
 });
