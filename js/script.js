@@ -6,15 +6,15 @@
 
 function setCookie(cname, cvalue, exdays) {
 	exdays = exdays || 365;
-	const d = new Date();
+	var d = new Date();
 	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-	const expires = "expires=" + d.toUTCString();
+	var expires = "expires=" + d.toUTCString();
 	document.cookie = cname + "=" + cvalue + "; " + expires;
 }
 
 function getCookie(cname) {
-	const name = cname + "=";
-	const ca = document.cookie.split(';');
+	var name = cname + "=";
+	var ca = document.cookie.split(';');
 	for (let i = 0; i < ca.length; i++) {
 		let c = ca[i];
 		while (c.charAt(0) === " ") {
@@ -28,8 +28,10 @@ function getCookie(cname) {
 }
 
 /*********************** Globals ********************/
+
 var bellySize = parseInt($(".belly").css("width"));
 var boxSize = parseInt($("#box").css("width"));
+
 var tailPosArray = [];
 
 var highscore = 0;
@@ -97,8 +99,6 @@ function headMove() {
 			$head.data("turn", headDirection);
 			break;
 	}
-
-
 	tailPosArray.push(oldHeadTop + oldHeadLeft);
 	tailPosArray.shift();
 
@@ -155,64 +155,69 @@ function setTurn() {
 
 /**************** Eating an apple *******************/
 
-/****************** Move apple *********************/
-
-function randomApple() {
-	function range() {
-		return Math.round((Math.floor(Math.random() * (boxSize - bellySize)) / 10)) * 10;
+var appleChecker = (function(){
+	function randomApple() {
+		function range() {
+			return Math.round((Math.floor(Math.random() * (boxSize - bellySize)) / 10)) * 10;
+		}
+		$(".apple").css({
+			"top": range(),
+			"left": range()
+		});
 	}
-	$(".apple").css({
-		"top": range(),
-		"left": range()
-	});
-}
+	function addTail() {
+		var $oldLastBelly = $(".belly").last();
+		$oldLastBelly.after("<div class='belly tail'></div>");
+		var $newTail = $(".belly").last();
 
-/**************** Add Tail *******************/
-function addTail() {
-	var $oldLastBelly = $(".belly").last();
-	$oldLastBelly.after("<div class='belly tail'></div>");
-	var $newTail = $(".belly").last();
-
-	var oldDirection = $oldLastBelly.data("turn");
-	var oldTop = parseInt($oldLastBelly.css("top"));
-	var oldLeft = parseInt($oldLastBelly.css("left"));
-	switch (oldDirection) {
-		case "up":
-			$newTail.css({
-				"top": oldTop + bellySize,
-				"left": oldLeft
-			});
-			break;
-		case "down":
-			$newTail.css({
-				"top": oldTop - bellySize,
-				"left": oldLeft
-			});
-			break;
-		case "left":
-			$newTail.css({
-				"top": oldTop,
-				"left": oldLeft + bellySize
-			});
-			break;
-		case "right":
-			$newTail.css({
-				"top": oldTop,
-				"left": oldLeft - bellySize
-			});
-			break;
+		var oldDirection = $oldLastBelly.data("turn");
+		var oldTop = parseInt($oldLastBelly.css("top"));
+		var oldLeft = parseInt($oldLastBelly.css("left"));
+		switch (oldDirection) {
+			case "up":
+				$newTail.css({
+					"top": oldTop + bellySize,
+					"left": oldLeft
+				});
+				break;
+			case "down":
+				$newTail.css({
+					"top": oldTop - bellySize,
+					"left": oldLeft
+				});
+				break;
+			case "left":
+				$newTail.css({
+					"top": oldTop,
+					"left": oldLeft + bellySize
+				});
+				break;
+			case "right":
+				$newTail.css({
+					"top": oldTop,
+					"left": oldLeft - bellySize
+				});
+				break;
+		}
+		var tailTop = $newTail.css("top");
+		var tailLeft = $newTail.css("left");
+		tailPosArray.unshift(tailTop + tailLeft);
 	}
-	var tailTop = $newTail.css("top");
-	var tailLeft = $newTail.css("left");
-	tailPosArray.unshift(tailTop + tailLeft);
-}
-
-function eatApple() {
-	randomApple();
-	addTail();
-	highscore += 10;
-	$(".highscore").text("Highscore: " + highscore);
-}
+	function eatApple() {
+		randomApple();
+		addTail();
+		highscore += 10;
+		$(".highscore").text("Highscore: " + highscore);
+	}
+	
+	return {
+		init: function() {
+			if (headPosTop === applePosTop && headPosLeft === applePosLeft) {
+				eatApple();
+			}
+		}
+	};
+}());
 
 /**************** Check if on an apple **************/
 
@@ -228,12 +233,6 @@ function getPositions() {
 	applePosLeft = parseInt($(".apple").css("left"));
 }
 
-function appleChecker() {
-	if (headPosTop === applePosTop && headPosLeft === applePosLeft) {
-		eatApple();
-	}
-}
-
 /********************* Game over ********************/
 
 var GameOverCheck = (function () {
@@ -243,7 +242,6 @@ var GameOverCheck = (function () {
 			bestscore = highscore;
 			setCookie("bestscore", highscore);
 		}
-		console.log(bestscore);
 		alert("You lose. " + message + "\nYour score: " + highscore);
 		highscore = 0;
 		setScores();
@@ -288,26 +286,13 @@ var GameOverCheck = (function () {
 function gameplay() {
 	headMove();
 	getPositions();
-	appleChecker();
+	appleChecker.init();
 	setTail();
 	setTurn();
 	GameOverCheck.init();
 }
 
-
-
 $(document).ready(function () {
-	//randomApple();
-	//eatApple();
-	//eatApple();
 	setScores();
-	console.log(bestscore);
 	setInterval(gameplay, 100);
-});
-
-
-
-//temporary tester
-$(document).dblclick(function () {
-	eatApple();
 });
