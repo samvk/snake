@@ -2,14 +2,11 @@
 
 $boxSize: 360px;
 
-html{
-	background-color: #F8F8F8;
-}
-
 #box {
 	position: relative;
 	overflow: hidden;
 	background-color: darkslategrey;
+    border: 1px solid darkslategrey;
 	margin: 0 auto;
 	margin-top: 50px;
 	margin-left: 50px;
@@ -29,7 +26,7 @@ html{
 	}
 }
 
-.belly {
+.snake {
 	position: absolute;
 	background-color: white;
 	width: 10px;

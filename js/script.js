@@ -4,10 +4,10 @@
 
 /*********************** Globals ********************/
 
-var bellySize = parseInt($(".belly").css("width"));
+var snakeSize = parseInt($(".snake").css("width"));
 var boxSize = parseInt($("#box").css("width"));
 
-var tailPosArray = [];
+var bellyPosArray = [];
 
 var highscore = 0;
 var bestscore = (function () {
@@ -26,7 +26,7 @@ var bestscore = (function () {
 	return 0;
 }());
 
-/******************** Get snake positions ******************/
+/******************** Get head/apple positions ******************/
 
 function GetPositions() {
 	this.headTop = parseInt($(".head").css("top"));
@@ -60,40 +60,44 @@ var moveHead = {
 				break;
 		}
 	},
+	pushBelly: function() {
+		//pushes old head position to the belly before moving
+		var position = new GetPositions();
+		bellyPosArray.push([position.headTop, position.headLeft]);
+		bellyPosArray.shift();
+	},
 
 	// Saving the head turn direction
 	init: function () {
+		this.pushBelly();
+		
 		var $head = $(".head");
-		var oldHeadTop = $head.css("top");
-		var oldHeadLeft = $head.css("left");
 		switch (this.headDirection) {
 			case "up":
 				$head.css({
-					"top": `-=${bellySize}px`
+					"top": `-=${snakeSize}px`
 				});
 				$head.data("turn", this.headDirection);
 				break;
 			case "down":
 				$head.css({
-					"top": `+=${bellySize}px`
+					"top": `+=${snakeSize}px`
 				});
 				$head.data("turn", this.headDirection);
 				break;
 			case "left":
 				$head.css({
-					"left": `-=${bellySize}px`
+					"left": `-=${snakeSize}px`
 				});
 				$head.data("turn", this.headDirection);
 				break;
 			case "right":
 				$head.css({
-					"left": `+=${bellySize}px`
+					"left": `+=${snakeSize}px`
 				});
 				$head.data("turn", this.headDirection);
 				break;
 		}
-		tailPosArray.push(oldHeadTop + oldHeadLeft);
-		tailPosArray.shift();
 	}
 };
 
@@ -101,38 +105,38 @@ $(document).keydown(function (key) {
 	moveHead.setDirection(key);
 });
 
-/**************** Moving the tail *******************/
-var moveTail = {
-	setTail: function () {
-		$(".tail").each(function (i, e) {
+/**************** Moving the belly *******************/
+var movebelly = {
+	setbelly: function () {
+		$(".belly").each(function (i, e) {
 			var $self = $(e);
-			var $prevBelly = $self.prev();
-			var newDirection = $prevBelly.data("turn");
-			var oldTop = parseInt($prevBelly.css("top"));
-			var oldLeft = parseInt($prevBelly.css("left"));
+			var $prevsnake = $self.prev();
+			var newDirection = $prevsnake.data("turn");
+			var oldTop = parseInt($prevsnake.css("top"));
+			var oldLeft = parseInt($prevsnake.css("left"));
 			switch (newDirection) {
 				case "up":
 					$self.css({
-						"top": oldTop + bellySize,
+						"top": oldTop + snakeSize,
 						"left": oldLeft
 					});
 					break;
 				case "down":
 					$self.css({
-						"top": oldTop - bellySize,
+						"top": oldTop - snakeSize,
 						"left": oldLeft
 					});
 					break;
 				case "left":
 					$self.css({
 						"top": oldTop,
-						"left": oldLeft + bellySize
+						"left": oldLeft + snakeSize
 					});
 					break;
 				case "right":
 					$self.css({
 						"top": oldTop,
-						"left": oldLeft - bellySize
+						"left": oldLeft - snakeSize
 					});
 					break;
 			}
@@ -141,65 +145,65 @@ var moveTail = {
 
 	//reverse array so the loop doesn't trigger ALL of them.
 	setTurn: function () {
-		$($(".tail").get().reverse()).each(function (i, e) {
+		$($(".belly").get().reverse()).each(function (i, e) {
 			var $self = $(e);
-			var $prevBelly = $self.prev();
-			var prevTurn = $prevBelly.data("turn");
+			var $prevsnake = $self.prev();
+			var prevTurn = $prevsnake.data("turn");
 			$self.data("turn", prevTurn);
 		});
 	},
 	
 	init: function(){
-		this.setTail();
+		this.setbelly();
 		this.setTurn();
 	}
 };
 
 /**************** Eating an apple *******************/
 
-var appleChecker = (function () {
+var eatAppleCheck = (function () {
 	function addTail() {
-		var $oldLastBelly = $(".belly").last();
-		$oldLastBelly.after("<div class='belly tail'></div>");
-		var $newTail = $(".belly").last();
+		var $oldSnakeTail = $(".snake").last();
+		$oldSnakeTail.after("<div class='snake belly'></div>");
+		var $newTail = $(".snake").last();
 
-		var oldDirection = $oldLastBelly.data("turn");
-		var oldTop = parseInt($oldLastBelly.css("top"));
-		var oldLeft = parseInt($oldLastBelly.css("left"));
-		switch (oldDirection) {
+		var tailDirection = $oldSnakeTail.data("turn");
+		var oldTop = parseInt($oldSnakeTail.css("top"));
+		var oldLeft = parseInt($oldSnakeTail.css("left"));
+		switch (tailDirection) {
 			case "up":
 				$newTail.css({
-					"top": oldTop + bellySize,
+					"top": oldTop + snakeSize,
 					"left": oldLeft
 				});
 				break;
 			case "down":
 				$newTail.css({
-					"top": oldTop - bellySize,
+					"top": oldTop - snakeSize,
 					"left": oldLeft
 				});
 				break;
 			case "left":
 				$newTail.css({
 					"top": oldTop,
-					"left": oldLeft + bellySize
+					"left": oldLeft + snakeSize
 				});
 				break;
 			case "right":
 				$newTail.css({
 					"top": oldTop,
-					"left": oldLeft - bellySize
+					"left": oldLeft - snakeSize
 				});
 				break;
 		}
 		var tailTop = $newTail.css("top");
 		var tailLeft = $newTail.css("left");
-		tailPosArray.unshift(tailTop + tailLeft);
+		bellyPosArray.unshift(tailTop + tailLeft);
 	}
 	
 	function randomApple() {
 		function range() {
-			return Math.round((Math.floor(Math.random() * (boxSize - bellySize)) / 10)) * 10;
+			return Math.round((Math.floor(Math.random() * (boxSize - snakeSize)) / 10)) * 10;
 		}
 		$(".apple").css({
 			"top": range(),
@@ -248,28 +252,27 @@ var GameOverCheck = (function () {
 		alert("You lose. " + message + "\nYour score: " + highscore);
 		highscore = 0;
 		setScores();
-		$(".belly").remove();
-		$("#box").append("<div class='belly head'></div>");
+		$(".snake").remove();
+		$("#box").append("<div class='snake head'></div>");
 		moveHead.headDirection = "down";
-		tailPosArray = [];
+		bellyPosArray = [];
 	}
 
 	//check if out of bounds
 	function checkBounds() {
 		//position();
 		var position = new GetPositions();
-		if (position.headTop < 0 || position.headLeft < 0 || position.headTop > (boxSize - bellySize) || position.headLeft > (boxSize - bellySize)) {
+		if (parseInt(position.headTop) < 0 || parseInt(position.headLeft) < 0 || parseInt(position.headTop) > (boxSize - snakeSize) || parseInt(position.headLeft) > (boxSize - snakeSize)) {
 			gameOver("Out of bounds!");
 		}
 	}
 
 	//check if touching itself
 	function checkTouch() {
-		var headTop = $(".head").css("top");
-		var headLeft = $(".head").css("left");
-		var headPos = headTop + headLeft;
-		for (var i = 0; i < tailPosArray.length; i++) {
-			if (headPos === tailPosArray[i]) {
+		var position = new GetPositions();
+		var headPos = [position.headTop, position.headLeft];
+		for (var i = 0; i < bellyPosArray.length; i++) {
+			if (headPos.join() === bellyPosArray[i].join()) {
 				gameOver("Stop hitting yourself!");
 				return;
 			}
@@ -289,8 +292,8 @@ var GameOverCheck = (function () {
 
 function gameplay() {
 	moveHead.init();
-	appleChecker.init();
-	moveTail.init();
+	movebelly.init();
+	eatAppleCheck.init();
 	GameOverCheck.init();
 }
 
