@@ -71,35 +71,32 @@ $(document).ready(function () {
             bellyPosArray.shift();
         },
 
-        // Saving the head direction
         init: function () {
             this.pushBelly();
 
             var $head = $(".head");
-            switch (this.headDirection) {
+			
+			$head.data("direction", this.headDirection);
+			switch (this.headDirection) {
             case "up":
                 $head.css({
                     "top": `-=${snakeSize}px`
                 });
-                $head.data("direction", this.headDirection);
                 break;
             case "down":
                 $head.css({
                     "top": `+=${snakeSize}px`
                 });
-                $head.data("direction", this.headDirection);
                 break;
             case "left":
                 $head.css({
                     "left": `-=${snakeSize}px`
                 });
-                $head.data("direction", this.headDirection);
                 break;
             case "right":
                 $head.css({
                     "left": `+=${snakeSize}px`
                 });
-                $head.data("direction", this.headDirection);
                 break;
             }
         }
