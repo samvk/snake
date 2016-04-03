@@ -62,18 +62,18 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   margin: 0 auto;
   margin-top: 50px;
   margin-left: 50px;
-  width: 360px;
-  height: 360px;
+  width: 350px;
+  height: 350px;
 }
 
 #highscore-box {
   font: 11px 'Press Start 2P', cursive;
-  width: 360px;
+  width: 350px;
   margin-top: 5px;
   margin-left: 55px;
 }
 #highscore-box p {
-  width: 180px;
+  width: 175px;
   float: left;
 }
 
