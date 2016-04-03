@@ -3,24 +3,24 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Play the retro snake game.">
-    <meta name="author" content="Sam Kauffman">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Play the retro snake game.">
+	<meta name="author" content="Sam Kauffman">
 
-    <title>Snake</title>
-    <link rel="shortcut icon" href="img/icon/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="img/icon/favicon.ico" type="image/x-icon">
+	<title>Snake</title>
+	<link rel="shortcut icon" href="img/icon/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="img/icon/favicon.ico" type="image/x-icon">
 
-    <!-- Custom Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+	<!-- Custom Fonts -->
+	<link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
 
-    <!-- Custom CSS -->
-    <link href="css/style.css" rel="stylesheet">
+	<!-- Custom CSS -->
+	<link href="css/style.css" rel="stylesheet">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
@@ -29,23 +29,25 @@
 
 <body>
 
-    <div id="box">
-        <div class="apple"></div>
-        <div class="snake head"></div>
-    </div>
-	
-    <div id="highscore-box">
+	<div id="box">
+		<div class="apple"></div>
+		<div id="snake-box">
+			<div class="snake head"></div>
+		</div>
+	</div>
+
+	<div id="highscore-box">
 		<p>Highscore: <span class="highscore">0</span></p>
 		<p>Best score: <span class="bestscore">0</span></p>
-    </div>
+	</div>
 
-    <!--**************************************************-->
+	<!--**************************************************-->
 
-    <!-- jQuery Version 1.11.3 -->
-    <script src="js/jquery-1.11.3.min.js"></script>
+	<!-- jQuery Version 1.11.3 -->
+	<script src="js/jquery-1.11.3.min.js"></script>
 
-    <!-- Javascript -->
-    <script src="js/script.js"></script>
+	<!-- Javascript -->
+	<script src="js/script.js"></script>
 
 </body>
 

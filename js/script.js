@@ -112,54 +112,26 @@ $(document).ready(function () {
     /**************** Moving the belly *******************/
     var moveBelly = {
         moveEachBelly: function () {
-            $(".belly").each(function (i, e) {
+			//reverse loop so changes don't cascade.
+			$($(".belly").get().reverse()).each(function (i, e) {
                 var $self = $(e);
                 var $prevSnake = $self.prev();
-                var newDirection = $prevSnake.data("direction");
-                var oldTop = parseInt($prevSnake.css("top"));
-                var oldLeft = parseInt($prevSnake.css("left"));
-                switch (newDirection) {
-                case "up":
-                    $self.css({
-                        "top": oldTop + snakeSize,
-                        "left": oldLeft
-                    });
-                    break;
-                case "down":
-                    $self.css({
-                        "top": oldTop - snakeSize,
-                        "left": oldLeft
-                    });
-                    break;
-                case "left":
-                    $self.css({
-                        "top": oldTop,
-                        "left": oldLeft + snakeSize
-                    });
-                    break;
-                case "right":
-                    $self.css({
-                        "top": oldTop,
-                        "left": oldLeft - snakeSize
-                    });
-                    break;
-                }
-            });
-        },
-
-        //reverse array so the loop doesn't trigger ALL of them.
-        setNewDirection: function () {
-            $($(".belly").get().reverse()).each(function (i, e) {
-                var $self = $(e);
-                var $prevSnake = $self.prev();
-                var prevDirection = $prevSnake.data("direction");
-                $self.data("direction", prevDirection);
+                
+				//set each belly to its previous' position.
+				$self.css({
+					"top": $prevSnake.css("top"),
+					"left": $prevSnake.css("left")
+				});
+				
+				//set each belly to its previous' data-direction.
+				var prevDirection = $prevSnake.data("direction");
+				$self.data("direction", prevDirection);				
+				
             });
         },
 
         init: function () {
             this.moveEachBelly();
-            this.setNewDirection();
         }
     };
 
@@ -311,8 +283,8 @@ $(document).ready(function () {
     /********************************************/
 
     function gameplay() {
-        moveHead.init();
-        moveBelly.init();
+		moveBelly.init();
+		moveHead.init();
         eatAppleCheck.init();
         gameOverCheck.init();
     }
