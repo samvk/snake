@@ -40,12 +40,11 @@ $(document).ready(function () {
 	}
 
 	/*********************** Moving the head ********************/
-
-	var headDirection = "down";
-	
+    
 	var moveHead = {
+        headDirection: "down",
         newHeadPos: function() {
-            headDirection = "down";
+            this.headDirection = "down";
             var $head = $(".head");
             $head.css({
                 "top": `+=${snakeSize}px`
@@ -57,7 +56,7 @@ $(document).ready(function () {
 				case 38: //"up"
 				case 104:
 					this.newHeadPos = function() {
-						headDirection = "up";
+						this.headDirection = "up";
 						$head.css({
 							"top": `-=${snakeSize}px`
 						});
@@ -67,7 +66,7 @@ $(document).ready(function () {
 				case 98:
 				case 101:
 					this.newHeadPos = function() {
-						headDirection = "down";
+						this.headDirection = "down";
 						$head.css({
 							"top": `+=${snakeSize}px`
 						});
@@ -76,7 +75,7 @@ $(document).ready(function () {
 				case 37: //"left"
 				case 100:
 					this.newHeadPos = function() {
-						headDirection = "left";
+						this.headDirection = "left";
 						$head.css({
 							"left": `-=${snakeSize}px`
 						});
@@ -85,7 +84,7 @@ $(document).ready(function () {
 				case 39: //"right"
 				case 102:
 					this.newHeadPos = function() {
-						headDirection = "right";
+						this.headDirection = "right";
 						$head.css({
 							"left": `+=${snakeSize}px`
 						});
@@ -103,7 +102,7 @@ $(document).ready(function () {
 			this.pushBelly();
 			var $head = $(".head");
             this.newHeadPos();
-            $head.data("direction", headDirection);
+            $head.data("direction", this.headDirection);
 		}
 	};
 
@@ -228,7 +227,7 @@ $(document).ready(function () {
         
         function resetHeadDir() {
             moveHead.newHeadPos = function() {
-                headDirection = "down";
+                moveHead.headDirection = "down";
                 var $head = $(".head");
                 $head.css({
                     "top": `+=${snakeSize}px`
