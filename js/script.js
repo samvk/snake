@@ -43,21 +43,20 @@ $(document).ready(function () {
 
 	var headDirection = "down";
 	
-	var newHeadPos = function() {
-		headDirection = "down";
-		var $head = $(".head");
-		$head.css({
-			"top": `+=${snakeSize}px`
-		});
-	};
-	
 	var moveHead = {
+        newHeadPos: function() {
+            headDirection = "down";
+            var $head = $(".head");
+            $head.css({
+                "top": `+=${snakeSize}px`
+            });
+        },
 		setDirection: function (inputKey) {
 			var $head = $(".head");
 			switch (parseInt(inputKey.which, 10)) {
 				case 38: //"up"
 				case 104:
-					newHeadPos = function() {
+					this.newHeadPos = function() {
 						headDirection = "up";
 						$head.css({
 							"top": `-=${snakeSize}px`
@@ -67,7 +66,7 @@ $(document).ready(function () {
 				case 40: //"down"
 				case 98:
 				case 101:
-					newHeadPos = function() {
+					this.newHeadPos = function() {
 						headDirection = "down";
 						$head.css({
 							"top": `+=${snakeSize}px`
@@ -76,7 +75,7 @@ $(document).ready(function () {
 					break;
 				case 37: //"left"
 				case 100:
-					newHeadPos = function() {
+					this.newHeadPos = function() {
 						headDirection = "left";
 						$head.css({
 							"left": `-=${snakeSize}px`
@@ -85,7 +84,7 @@ $(document).ready(function () {
 					break;
 				case 39: //"right"
 				case 102:
-					newHeadPos = function() {
+					this.newHeadPos = function() {
 						headDirection = "right";
 						$head.css({
 							"left": `+=${snakeSize}px`
@@ -100,13 +99,11 @@ $(document).ready(function () {
 			bellyPosArray.push([position.headTop, position.headLeft]);
 			bellyPosArray.shift();
 		},
-
 		init: function () {
 			this.pushBelly();
-
 			var $head = $(".head");
 			$head.data("direction", this.headDirection);
-			newHeadPos();
+			this.newHeadPos();
 		}
 	};
 
@@ -201,18 +198,15 @@ $(document).ready(function () {
 
 		}
 
-		function eatApple() {
-			randomApple();
-			addTail();
-			highscore += 10;
-			$(".highscore").text(highscore);
-		}
-
 		return {
 			init: function () {
 				var position = new GetPositions();
 				if (position.headTop === position.appleTop && position.headLeft === position.appleLeft) {
-					eatApple();
+                    randomApple();
+                    addTail();
+                    console.log("after add tail");
+                    highscore += 10;
+                    $(".highscore").text(highscore);
 				}
 			}
 		};
@@ -232,6 +226,16 @@ $(document).ready(function () {
 			$(".highscore").text(highscore);
 			$(".bestscore").text(bestscore);
 		}
+        
+        function resetHeadDir() {
+            moveHead.newHeadPos = function() {
+                headDirection = "down";
+                var $head = $(".head");
+                $head.css({
+                    "top": `+=${snakeSize}px`
+                });
+            };
+        }
 
 		function gameOver(message) {
 			//set new highscore
@@ -244,15 +248,7 @@ $(document).ready(function () {
 			setScores();
 			$(".snake").remove();
 			$("#box").append("<div class='snake head'></div>");
-			
-			newHeadPos = function() {
-				headDirection = "down";
-				var $head = $(".head");
-				$head.css({
-					"top": `+=${snakeSize}px`
-				});
-			};
-			
+            resetHeadDir();			
 			bellyPosArray = [];
 		}
 
@@ -290,7 +286,8 @@ $(document).ready(function () {
 	/********************************************/
 
 	function gameplay() {
-		moveBelly();
+        //eatAppleCheck.init();
+        moveBelly();
 		moveHead.init();
 		eatAppleCheck.init();
 		gameOverCheck.init();
