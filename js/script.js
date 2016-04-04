@@ -102,8 +102,8 @@ $(document).ready(function () {
 		init: function () {
 			this.pushBelly();
 			var $head = $(".head");
-			$head.data("direction", this.headDirection);
-			this.newHeadPos();
+            this.newHeadPos();
+            $head.data("direction", headDirection);
 		}
 	};
 
@@ -204,7 +204,6 @@ $(document).ready(function () {
 				if (position.headTop === position.appleTop && position.headLeft === position.appleLeft) {
                     randomApple();
                     addTail();
-                    console.log("after add tail");
                     highscore += 10;
                     $(".highscore").text(highscore);
 				}
