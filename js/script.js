@@ -242,7 +242,7 @@ $(document).ready(function () {
 			highscore = 0;
 			setScores();
 			$(".snake").remove();
-			$("#box").append("<div class='snake head'></div>");
+            $("#snake-box").append("<div class='snake head'></div>");
             resetHeadDir();			
 			bellyPosArray = [];
 		}
