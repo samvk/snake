@@ -41,26 +41,56 @@ $(document).ready(function () {
 
 	/*********************** Moving the head ********************/
 
+	var headDirection = "down";
+	
+	var newHeadPos = function() {
+		headDirection = "down";
+		var $head = $(".head");
+		$head.css({
+			"top": `+=${snakeSize}px`
+		});
+	};
+	
 	var moveHead = {
-		headDirection: "down",
 		setDirection: function (inputKey) {
+			var $head = $(".head");
 			switch (parseInt(inputKey.which, 10)) {
 				case 38: //"up"
 				case 104:
-					this.headDirection = "up";
+					newHeadPos = function() {
+						headDirection = "up";
+						$head.css({
+							"top": `-=${snakeSize}px`
+						});
+					};
 					break;
 				case 40: //"down"
 				case 98:
 				case 101:
-					this.headDirection = "down";
+					newHeadPos = function() {
+						headDirection = "down";
+						$head.css({
+							"top": `+=${snakeSize}px`
+						});
+					};
 					break;
 				case 37: //"left"
 				case 100:
-					this.headDirection = "left";
+					newHeadPos = function() {
+						headDirection = "left";
+						$head.css({
+							"left": `-=${snakeSize}px`
+						});
+					};
 					break;
 				case 39: //"right"
 				case 102:
-					this.headDirection = "right";
+					newHeadPos = function() {
+						headDirection = "right";
+						$head.css({
+							"left": `+=${snakeSize}px`
+						});
+					};
 					break;
 			}
 		},
@@ -75,30 +105,8 @@ $(document).ready(function () {
 			this.pushBelly();
 
 			var $head = $(".head");
-
 			$head.data("direction", this.headDirection);
-			switch (this.headDirection) {
-				case "up":
-					$head.css({
-						"top": `-=${snakeSize}px`
-					});
-					break;
-				case "down":
-					$head.css({
-						"top": `+=${snakeSize}px`
-					});
-					break;
-				case "left":
-					$head.css({
-						"left": `-=${snakeSize}px`
-					});
-					break;
-				case "right":
-					$head.css({
-						"left": `+=${snakeSize}px`
-					});
-					break;
-			}
+			newHeadPos();
 		}
 	};
 
@@ -236,13 +244,20 @@ $(document).ready(function () {
 			setScores();
 			$(".snake").remove();
 			$("#box").append("<div class='snake head'></div>");
-			moveHead.headDirection = "down";
+			
+			newHeadPos = function() {
+				headDirection = "down";
+				var $head = $(".head");
+				$head.css({
+					"top": `+=${snakeSize}px`
+				});
+			};
+			
 			bellyPosArray = [];
 		}
 
 		//check if out of bounds
 		function checkBounds() {
-			//position();
 			var position = new GetPositions();
 			if (parseInt(position.headTop) < 0 || parseInt(position.headLeft) < 0 || parseInt(position.headTop) > (boxSize - snakeSize) || parseInt(position.headLeft) > (boxSize - snakeSize)) {
 				gameOver("Out of bounds!");
