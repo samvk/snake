@@ -17,12 +17,16 @@ $boxSize: 350px;
 #highscore-box {
 	font: 11px 'Press Start 2P', cursive;
 	width: $boxSize;
-	margin-top: 5px;
-	margin-left: 55px;
+	margin-top: 12px;
+	margin-left: 50px;
 	
 	p {
-		width: $boxSize / 2;
-		float: left;
+        &:first-child {
+            float: left;
+        }
+        &:last-child {
+            float: right;
+        }
 	}
 }
 

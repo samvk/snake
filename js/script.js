@@ -38,7 +38,7 @@ $(document).ready(function () {
 	}
 
 	/*********************** Moving the head ********************/
-    var moveHead = (function(snakeSize, bellyPosArray){
+    var moveHead = (function(){
         function pushBelly() {
             //pushes old head position to the belly before moving
             var position = new GetPositions();
@@ -104,7 +104,7 @@ $(document).ready(function () {
                 $head.data("direction", this.headDirection);
             }
         };
-    }(snakeSize, bellyPosArray));
+    }());
 
 	$(document).keydown(function (key) {
 		moveHead.setDirection(key);
@@ -131,7 +131,7 @@ $(document).ready(function () {
 	};
 
 	/**************** Eating an apple *******************/
-    var eatAppleCheck = (function (snakeSize, boxSize, bellyPosArray, highscore) {
+    var eatAppleCheck = (function () {
 		function pushTail() {
 			var position = new GetPositions();
 			bellyPosArray.unshift([position.tailTop, position.tailLeft]);
@@ -206,10 +206,10 @@ $(document).ready(function () {
 				}
 			}
 		};
-    }(snakeSize, boxSize, bellyPosArray, highscore));
+    }());
 
 	/********************* Game over ********************/
-    var gameOverCheck = (function (snakeSize, boxSize, bellyPosArray, highscore, bestscore) {
+    var gameOverCheck = (function () {
 		function setBestscoreCookie(cname, cvalue) {
 			var d = new Date();
 			d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
@@ -274,7 +274,7 @@ $(document).ready(function () {
 				checkTouch();
 			}
 		};
-    }(snakeSize, boxSize, bellyPosArray, highscore, bestscore));
+    }());
 
 	/********************************************/
 	/**************** GAMEPLAY ******************/

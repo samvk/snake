@@ -69,12 +69,14 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 #highscore-box {
   font: 11px 'Press Start 2P', cursive;
   width: 350px;
-  margin-top: 5px;
-  margin-left: 55px;
+  margin-top: 12px;
+  margin-left: 50px;
 }
-#highscore-box p {
-  width: 175px;
+#highscore-box p:first-child {
   float: left;
+}
+#highscore-box p:last-child {
+  float: right;
 }
 
 .snake {
