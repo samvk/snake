@@ -3,7 +3,7 @@
 
 $(document).ready(function () {
 	"use strict";
-
+    
 	/*********************** Globals ********************/
 	var snakeSize = parseInt($(".snake").css("width"));
 	var boxSize = parseInt($("#box").css("width"));
@@ -286,7 +286,6 @@ $(document).ready(function () {
 		eatAppleCheck.init();
 		gameOverCheck.init();
 	}
-
 	setInterval(gameplay, 100);
 
 	$(".bestscore").text(bestscore);
