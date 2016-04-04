@@ -5,7 +5,6 @@ $(document).ready(function () {
 	"use strict";
 
 	/*********************** Globals ********************/
-
 	var snakeSize = parseInt($(".snake").css("width"));
 	var boxSize = parseInt($("#box").css("width"));
 
@@ -29,7 +28,6 @@ $(document).ready(function () {
 	}());
 
 	/******************** Get head/apple positions ******************/
-
 	function GetPositions() {
 		this.headTop = parseInt($(".head").css("top"));
 		this.headLeft = parseInt($(".head").css("left"));
@@ -40,71 +38,73 @@ $(document).ready(function () {
 	}
 
 	/*********************** Moving the head ********************/
-    
-	var moveHead = {
-        headDirection: "down",
-        newHeadPos: function() {
-            this.headDirection = "down";
-            var $head = $(".head");
-            $head.css({
-                "top": `+=${snakeSize}px`
-            });
-        },
-		setDirection: function (inputKey) {
-			var $head = $(".head");
-			switch (parseInt(inputKey.which, 10)) {
-				case 38: //"up"
-				case 104:
-					this.newHeadPos = function() {
-						this.headDirection = "up";
-						$head.css({
-							"top": `-=${snakeSize}px`
-						});
-					};
-					break;
-				case 40: //"down"
-				case 98:
-				case 101:
-					this.newHeadPos = function() {
-						this.headDirection = "down";
-						$head.css({
-							"top": `+=${snakeSize}px`
-						});
-					};
-					break;
-				case 37: //"left"
-				case 100:
-					this.newHeadPos = function() {
-						this.headDirection = "left";
-						$head.css({
-							"left": `-=${snakeSize}px`
-						});
-					};
-					break;
-				case 39: //"right"
-				case 102:
-					this.newHeadPos = function() {
-						this.headDirection = "right";
-						$head.css({
-							"left": `+=${snakeSize}px`
-						});
-					};
-					break;
-			}
-		},
-		pushBelly: function () {
-			//pushes old head position to the belly before moving
-			var position = new GetPositions();
-			bellyPosArray.push([position.headTop, position.headLeft]);
-			bellyPosArray.shift();
-		},
-		init: function () {
-			this.pushBelly();
-			var $head = $(".head");
-            this.newHeadPos();
-            $head.data("direction", this.headDirection);
-		}
-	};
+	var moveHead = (function(){
+        function pushBelly() {
+            //pushes old head position to the belly before moving
+            var position = new GetPositions();
+            bellyPosArray.push([position.headTop, position.headLeft]);
+            bellyPosArray.shift();
+        }
+        
+        return {
+            headDirection: "down",
+            newHeadPos: function() {
+                this.headDirection = "down";
+                var $head = $(".head");
+                $head.css({
+                    "top": `+=${snakeSize}px`
+                });
+            },
+            setDirection: function (inputKey) {
+                var $head = $(".head");
+                switch (parseInt(inputKey.which, 10)) {
+                    case 38: //"up"
+                    case 104:
+                        this.newHeadPos = function() {
+                            this.headDirection = "up";
+                            $head.css({
+                                "top": `-=${snakeSize}px`
+                            });
+                        };
+                        break;
+                    case 40: //"down"
+                    case 98:
+                    case 101:
+                        this.newHeadPos = function() {
+                            this.headDirection = "down";
+                            $head.css({
+                                "top": `+=${snakeSize}px`
+                            });
+                        };
+                        break;
+                    case 37: //"left"
+                    case 100:
+                        this.newHeadPos = function() {
+                            this.headDirection = "left";
+                            $head.css({
+                                "left": `-=${snakeSize}px`
+                            });
+                        };
+                        break;
+                    case 39: //"right"
+                    case 102:
+                        this.newHeadPos = function() {
+                            this.headDirection = "right";
+                            $head.css({
+                                "left": `+=${snakeSize}px`
+                            });
+                        };
+                        break;
+                }
+            },
+            init: function () {
+                pushBelly();
+                var $head = $(".head");
+                this.newHeadPos();
+                $head.data("direction", this.headDirection);
+            }
+        };
+    }());
 
 	$(document).keydown(function (key) {
 		moveHead.setDirection(key);
@@ -127,12 +127,10 @@ $(document).ready(function () {
 			//set each belly to its previous' data-direction.
 			var prevDirection = $prevSnake.data("direction");
 			$self.data("direction", prevDirection);
-
 		});
 	};
 
 	/**************** Eating an apple *******************/
-
 	var eatAppleCheck = (function () {
 		function pushTail() {
 			var position = new GetPositions();
@@ -211,7 +209,6 @@ $(document).ready(function () {
 	}());
 
 	/********************* Game over ********************/
-
 	var gameOverCheck = (function () {
 		function setBestscoreCookie(cname, cvalue) {
 			var d = new Date();
@@ -284,7 +281,6 @@ $(document).ready(function () {
 	/********************************************/
 
 	function gameplay() {
-        //eatAppleCheck.init();
         moveBelly();
 		moveHead.init();
 		eatAppleCheck.init();
