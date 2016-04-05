@@ -63,7 +63,7 @@ $(document).ready(function () {
 				this.headDirection = "down";
 				var $head = $(".head");
 				$head.css({
-					"top": `+=${snakeSize}px`
+					"top": "+=" + snakeSize
 				});
 			},
 			setDirection: function (inputKey) {
@@ -74,7 +74,7 @@ $(document).ready(function () {
 						this.newHeadPos = function () {
 							this.headDirection = "up";
 							$head.css({
-								"top": `-=${snakeSize}px`
+								"top": "-=" + snakeSize
 							});
 						};
 						break;
@@ -84,7 +84,7 @@ $(document).ready(function () {
 						this.newHeadPos = function () {
 							this.headDirection = "down";
 							$head.css({
-								"top": `+=${snakeSize}px`
+								"top": "+=" + snakeSize
 							});
 						};
 						break;
@@ -93,7 +93,7 @@ $(document).ready(function () {
 						this.newHeadPos = function () {
 							this.headDirection = "left";
 							$head.css({
-								"left": `-=${snakeSize}px`
+								"left": "-=" + snakeSize
 							});
 						};
 						break;
@@ -102,7 +102,7 @@ $(document).ready(function () {
 						this.newHeadPos = function () {
 							this.headDirection = "right";
 							$head.css({
-								"left": `+=${snakeSize}px`
+								"left": "+=" + snakeSize
 							});
 						};
 						break;
@@ -236,7 +236,7 @@ $(document).ready(function () {
 				moveHead.headDirection = "down";
 				var $head = $(".head");
 				$head.css({
-					"top": `+=${snakeSize}px`
+					"top": "+=" + snakeSize
 				});
 			};
 		}
