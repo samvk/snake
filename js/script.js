@@ -1,4 +1,3 @@
-/*jshint esversion: 6*/
 /*global $, document, Image, window, setTimeout, setInterval, clearInterval, alert*/
 
 $(document).ready(function () {
@@ -14,7 +13,7 @@ $(document).ready(function () {
     var bestscore = (function () {
         //get cookie
         var name = "bestscore=";
-        var ca = document.cookie.split(';');
+        var ca = document.cookie.split(";");
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
             while (c.charAt(0) === " ") {
@@ -164,7 +163,7 @@ $(document).ready(function () {
 
         function addTail() {
             var $oldSnakeTail = $(".snake").last();
-            $oldSnakeTail.after("<div class='snake belly'></div>");
+            $oldSnakeTail.after('<div class="snake belly"></div>');
             var $newTail = $(".snake").last();
 
             var tailDirection = $oldSnakeTail.data("direction");
