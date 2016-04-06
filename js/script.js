@@ -4,7 +4,7 @@
 $(document).ready(function () {
 	"use strict";
 
-	/*********************** Globals ********************/
+	/************************ Globals ***********************/
 	var snakeSize = parseInt($(".snake").css("width"));
 	var boxSize = parseInt($("#box").css("width"));
 
