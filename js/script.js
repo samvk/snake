@@ -27,7 +27,7 @@ $(document).ready(function () {
         return 0;
     }());
 
-    /******************** Get head/apple positions ******************/
+    /******************** Get snake/apple positions ******************/
     var position = {
         headTop: function () {
             return parseInt($(".head").css("top"));
