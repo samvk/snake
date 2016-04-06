@@ -88,8 +88,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 }
 
 .head {
-  top: 0;
-  left: 0;
+  top: 40px;
+  left: 10px;
 }
 
 .apple {
@@ -98,7 +98,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   width: 10px;
   height: 10px;
   border-radius: 10%;
-  top: 90px;
+  top: 100px;
   left: 20px;
 }
 
