@@ -49,6 +49,26 @@ $(document).ready(function () {
 		}
 	};
 
+    /**************** Moving the belly *******************/
+    var moveBelly = function () {
+        //reverse loop so changes don't cascade.
+        var $bellyReverse = $($(".belly").get().reverse());
+        $bellyReverse.each(function (i, e) {
+            var $self = $(e);
+            var $prevSnake = $self.prev();
+
+            //set each belly to its previous' position.
+            $self.css({
+                "top": $prevSnake.css("top"),
+                "left": $prevSnake.css("left")
+            });
+
+            //set each belly to its previous' data-direction.
+            var prevDirection = $prevSnake.data("direction");
+            $self.data("direction", prevDirection);
+        });
+    };
+    
 	/*********************** Moving the head ********************/
 	var moveHead = (function () {
 		function pushBelly() {
@@ -120,26 +140,6 @@ $(document).ready(function () {
 	$(document).keydown(function (key) {
 		moveHead.setDirection(key);
 	});
-
-	/**************** Moving the belly *******************/
-	var moveBelly = function () {
-		//reverse loop so changes don't cascade.
-		var $bellyReverse = $($(".belly").get().reverse());
-		$bellyReverse.each(function (i, e) {
-			var $self = $(e);
-			var $prevSnake = $self.prev();
-
-			//set each belly to its previous' position.
-			$self.css({
-				"top": $prevSnake.css("top"),
-				"left": $prevSnake.css("left")
-			});
-
-			//set each belly to its previous' data-direction.
-			var prevDirection = $prevSnake.data("direction");
-			$self.data("direction", prevDirection);
-		});
-	};
 
 	/**************** Eating an apple *******************/
 	var eatAppleCheck = (function () {
@@ -296,5 +296,4 @@ $(document).ready(function () {
 	setInterval(gameplay, 100);
 
 	$(".bestscore").text(bestscore);
-
 });
