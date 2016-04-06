@@ -87,6 +87,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   border-radius: 50%;
 }
 
+.head {
+  top: 0;
+  left: 0;
+}
+
 .apple {
   position: absolute;
   background-color: red;
