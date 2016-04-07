@@ -3,7 +3,7 @@
 $(document).ready(function () {
     "use strict";
 
-    /************************ Globals ***********************/
+    /********************** Globals *********************/
     var snakeSize = parseInt($(".snake").css("width"));
     var boxSize = parseInt($("#box").css("width"));
 
@@ -26,7 +26,7 @@ $(document).ready(function () {
         return 0;
     }());
 
-    /******************** Get snake/apple positions ******************/
+    /************** Get snake/apple positions ************/
     var position = {
         headTop: function () {
             return parseInt($(".head").css("top"));
@@ -48,7 +48,7 @@ $(document).ready(function () {
         }
     };
     
-    /******************** Build new snake ******************/
+    /******************* Build new snake *****************/
     function newSnake() {
         $("#snake-box").empty();
         $('<div class="snake head">').appendTo("#snake-box");
@@ -83,7 +83,7 @@ $(document).ready(function () {
         });
     };
 
-    /*********************** Moving the head ********************/
+    /******************* Moving the head ****************/
     var moveHead = (function () {
         function pushBelly() {
             //pushes old head position to the belly before moving
@@ -295,7 +295,7 @@ $(document).ready(function () {
         };
     }());
     
-    /********************* Gameplay mechanics ********************/
+    /**************** Gameplay mechanics ***************/
     function gameplay() {
         moveBelly();
         moveHead.init();
