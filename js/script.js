@@ -41,10 +41,10 @@ $(document).ready(function () {
             return parseInt($(".apple").css("left"));
         },
         tailTop: function () {
-            return parseInt($(".snake").last().css("left"));
+            return parseInt($(".snake").last().css("top"));
         },
         tailLeft: function () {
-            return parseInt($(".snake").last().css("right"));
+            return parseInt($(".snake").last().css("left"));
         }
     };
     
@@ -144,9 +144,8 @@ $(document).ready(function () {
             },
             init: function () {
                 pushBelly();
-                var $head = $(".head");
                 this.newHeadPos();
-                $head.data("direction", this.headDirection);
+				$(".head").data("direction", this.headDirection);
             }
         };
     }());
