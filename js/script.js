@@ -27,7 +27,11 @@ $(document).ready(function () {
     }());
 
     /************** Get snake/apple positions ************/
-    var position = {
+    function position(el, pos){
+		return parseInt($("." + el).css(pos));
+	}
+	/*
+	var position = {
         headTop: function () {
             return parseInt($(".head").css("top"));
         },
@@ -47,20 +51,20 @@ $(document).ready(function () {
             return parseInt($(".snake").last().css("left"));
         }
     };
-    
+    */
     /******************* Build new snake *****************/
     function newSnake() {
         $("#snake-box").empty();
         $('<div class="snake head">').appendTo("#snake-box");
 
-        var firstBellyTop = position.headTop() - snakeSize;
-        var secondBellyTop = position.headTop() - 2 * snakeSize;
-        $('<div class="snake belly">').appendTo("#snake-box").css({"top": firstBellyTop, "left": position.headLeft});
-        $('<div class="snake belly">').appendTo("#snake-box").css({"top": secondBellyTop, "left": position.headLeft});
+		var firstBellyTop = position("head", "top") - snakeSize;
+		var secondBellyTop = position("head", "top") - 2 * snakeSize;
+		$('<div class="snake belly">').appendTo("#snake-box").css({"top": firstBellyTop, "left": position("head", "left")});
+		$('<div class="snake belly">').appendTo("#snake-box").css({"top": secondBellyTop, "left": position("head", "left")});
 
         bellyPosArray = [];
-        bellyPosArray.push([firstBellyTop, position.headLeft()]);
-        bellyPosArray.push([secondBellyTop, position.headLeft()]);
+		bellyPosArray.push([firstBellyTop, position("head", "left")()]);
+		bellyPosArray.push([secondBellyTop, position("head", "left")()]);
     }    
 
     /**************** Moving the belly *******************/
@@ -71,7 +75,7 @@ $(document).ready(function () {
             var $self = $(e);
             var $prevSnake = $self.prev();
 
-            //set each belly to its previous' position.
+            //set each belly to its previous' position
             $self.css({
                 "top": $prevSnake.css("top"),
                 "left": $prevSnake.css("left")
@@ -87,7 +91,7 @@ $(document).ready(function () {
     var moveHead = (function () {
         function pushBelly() {
             //pushes old head position to the belly before moving
-            bellyPosArray.push([position.headTop(), position.headLeft()]);
+			bellyPosArray.push([position("head", "top"), position("head", "left")]);
             bellyPosArray.shift();
         }
 
@@ -157,7 +161,7 @@ $(document).ready(function () {
     /**************** Eating an apple *******************/
     var eatAppleCheck = (function () {
         function pushTail() {
-            bellyPosArray.unshift([position.tailTop(), position.tailLeft()]);
+			bellyPosArray.unshift([position("tail", "top"), position("tail", "left")]);
         }
 
         function addTail() {
@@ -220,7 +224,7 @@ $(document).ready(function () {
 
         return {
             init: function () {
-                if (position.headTop() === position.appleTop() && position.headLeft() === position.appleLeft()) {
+				if (position("head", "top") === position("apple", "top") && position("head", "left") === position("apple", "left")) {
                     randomApple();
                     addTail();
                     highscore += 10;
@@ -269,14 +273,14 @@ $(document).ready(function () {
 
         //check if out of bounds
         function checkBounds() {
-            if (position.headTop() < 0 || position.headLeft() < 0 || position.headTop() > (boxSize - snakeSize) || position.headLeft() > (boxSize - snakeSize)) {
+			if (position("head", "top") < 0 || position("head", "left") < 0 || position("head", "top") > (boxSize - snakeSize) || position("head", "left") > (boxSize - snakeSize)) {
                 gameOver("Out of bounds!");
             }
         }
 
         //check if touching itself
         function checkTouch() {
-            var headPos = [position.headTop(), position.headLeft()];
+			var headPos = [position("head", "top"), position("head", "left")];
             for (var i = 0; i < bellyPosArray.length; i++) {
                 if (headPos.join() === bellyPosArray[i].join()) {
                     gameOver("Stop hitting yourself!");
