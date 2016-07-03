@@ -50,13 +50,13 @@ $(document).ready(function () {
     
     /******************* Build new snake *****************/
     function newSnake() {
-        $("#snake-box").empty();
-        $('<div class="snake head">').appendTo("#snake-box");
+        $("#snake-container").empty();
+        $('<div class="snake head">').appendTo("#snake-container");
 
         var firstBellyTop = position.headTop() - snakeSize;
         var secondBellyTop = position.headTop() - 2 * snakeSize;
-        $('<div class="snake belly">').appendTo("#snake-box").css({"top": firstBellyTop, "left": position.headLeft});
-        $('<div class="snake belly">').appendTo("#snake-box").css({"top": secondBellyTop, "left": position.headLeft});
+        $('<div class="snake belly">').appendTo("#snake-container").css({"top": firstBellyTop, "left": position.headLeft});
+        $('<div class="snake belly">').appendTo("#snake-container").css({"top": secondBellyTop, "left": position.headLeft});
 
         bellyPosArray = [];
         bellyPosArray.push([firstBellyTop, position.headLeft()]);

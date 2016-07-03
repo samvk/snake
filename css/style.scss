@@ -3,10 +3,12 @@
 $boxSize: 350px;
 
 #box {
+    $darkgreen: #2f4f4f;
+    
 	position: relative;
 	overflow: hidden;
-	background-color: #2f4f4f;
-	border: 1px solid #2f4f4f;
+    background-color: $darkgreen;
+    border: 1px solid $darkgreen;
 	margin: 0 auto;
 	margin-top: 50px;
 	margin-left: 50px;
