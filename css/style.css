@@ -54,23 +54,40 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   display: block;
 }
 
+body {
+  background-color: #202020;
+}
+
+h1 {
+  font: small-caps 140px/.8 'Geo', sans-serif;
+  color: #FFFFFF;
+  text-align: center;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+#game-container {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 #box {
+  box-shadow: 2px 2px 8px #000000;
   position: relative;
   overflow: hidden;
   background-color: #2f4f4f;
   border: 1px solid #2f4f4f;
-  margin: 0 auto;
-  margin-top: 50px;
-  margin-left: 50px;
   width: 350px;
   height: 350px;
 }
 
 #highscore-box {
   font: 11px 'Press Start 2P', cursive;
+  text-shadow: 2px 2px 4px #000000;
+  color: white;
   width: 350px;
   margin-top: 12px;
-  margin-left: 50px;
 }
 #highscore-box p:first-child {
   float: left;
