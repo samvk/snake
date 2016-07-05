@@ -2,10 +2,12 @@
 
 $(document).ready(function () {
     "use strict";
-
+    
     /********************** Globals *********************/
+	var isGameOver = false;
+	
     var snakeSize = parseInt($(".snake").css("width"));
-    var boxSize = parseInt($("#box").css("width"));
+    var boxSize = parseInt($("#game-box").css("width"));
 
     var bellyPosArray = [];
 
@@ -46,22 +48,7 @@ $(document).ready(function () {
         tailLeft: function () {
             return parseInt($(".snake").last().css("left"));
         }
-    };
-    
-    /******************* Build new snake *****************/
-    function newSnake() {
-        $("#snake-container").empty();
-        $('<div class="snake head">').appendTo("#snake-container");
-
-        var firstBellyTop = position.headTop() - snakeSize;
-        var secondBellyTop = position.headTop() - 2 * snakeSize;
-        $('<div class="snake belly">').appendTo("#snake-container").css({"top": firstBellyTop, "left": position.headLeft});
-        $('<div class="snake belly">').appendTo("#snake-container").css({"top": secondBellyTop, "left": position.headLeft});
-
-        bellyPosArray = [];
-        bellyPosArray.push([firstBellyTop, position.headLeft()]);
-        bellyPosArray.push([secondBellyTop, position.headLeft()]);
-    }    
+    }; 
 
     /**************** Moving the belly *******************/
     var moveBelly = function () {
@@ -239,32 +226,20 @@ $(document).ready(function () {
             document.cookie = cname + "=" + cvalue + "; " + expires;
         }
 
-        function setScores() {
-            $(".highscore").text(highscore);
-            $(".bestscore").text(bestscore);
-        }
-
-        function resetHeadDir() {
-            moveHead.newHeadPos = function () {
-                moveHead.headDirection = "down";
-                var $head = $(".head");
-                $head.css({
-                    "top": "+=" + snakeSize
-                });
-            };
-        }
-
         function gameOver(message) {
             //set new highscore
             if (highscore > bestscore) {
                 bestscore = highscore;
                 setBestscoreCookie("bestscore", highscore);
             }
-            alert("You lose. " + message + "\nYour score: " + highscore);
-            highscore = 0;
-            setScores();
-            newSnake();
-            resetHeadDir();
+			
+			$(".play-again--message").text(message);
+            $("#play-again--screen").fadeIn(200);
+            
+            //so "enter" starts new game
+            $(".play-again--button").focus();
+			
+			isGameOver = true;
         }
 
         //check if out of bounds
@@ -294,21 +269,73 @@ $(document).ready(function () {
         };
     }());
     
-    /**************** Gameplay mechanics ***************/
+    /******************* Build new snake *****************/
+    function newSnake() {
+        //remove old snake
+        $("#snake-container").empty();
+        
+        //build new snake
+        $('<div class="snake head">').appendTo("#snake-container");
+
+        //build bellies and add to array
+        var firstBellyTop = position.headTop() - snakeSize;
+        var secondBellyTop = position.headTop() - 2 * snakeSize;
+        $('<div class="snake belly">').appendTo("#snake-container").css({"top": firstBellyTop, "left": position.headLeft});
+        $('<div class="snake belly">').appendTo("#snake-container").css({"top": secondBellyTop, "left": position.headLeft});
+
+        bellyPosArray = [];
+        bellyPosArray.push([firstBellyTop, position.headLeft()]);
+        bellyPosArray.push([secondBellyTop, position.headLeft()]);
+        
+        //(re)set head direction
+        moveHead.newHeadPos = function () {
+            moveHead.headDirection = "down";
+            var $head = $(".head");
+            $head.css({
+                "top": "+=" + snakeSize
+            });
+        };
+    }   
+
+    /********************************************/
+    /**************** GAMEPLAY ******************/
+    /********************************************/
+    
+    /************** Gameplay mechanics *************/
     function gameplay() {
         moveBelly();
         moveHead.init();
         eatAppleCheck.init();
         gameOverCheck.init();
     }
-
-    /********************************************/
-    /**************** GAMEPLAY ******************/
-    /********************************************/
-
-    newSnake();
     
-    setInterval(gameplay, 100);
+    /**************** Start new game ***************/	
+	function newGame () {
+		isGameOver = false;
+        $("#play-again--screen").fadeOut(150);
+		
+        //(re)set highscores
+		highscore = 0;
+        $(".highscore").text(highscore);
+        $(".bestscore").text(bestscore);
+		
+		newSnake();
 
-    $(".bestscore").text(bestscore);
+        //run gameplay on interval (if not gameover)
+		(function runGameplay() {
+			gameplay();
+			if (!isGameOver) {
+				setTimeout(runGameplay, 100);
+			}
+		}());
+	}
+    
+	newGame();
+	
+    /***** Play Again? screen (starting new game) *****/
+    $(".play-again--button").click(function(){
+        if (isGameOver) { //double-check that game really is over
+			newGame();
+		}
+	});
 });

@@ -1,0 +1,31 @@
+// ==========================================================================
+// PLAY AGAIN SCREEN
+// ==========================================================================//
+
+#play-again--screen {
+    //design
+    display: none;
+    white-space: nowrap;
+    
+    //layout
+    z-index: 200;
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.play-again--message {
+    //text
+    font: 18px 'Geo', cursive;
+    
+    //color
+    color: #FFFFFF;
+    
+    //design
+    text-shadow: 1px 1px 2px #000000;
+
+    //layout
+    padding-bottom: 1.4em;
+}

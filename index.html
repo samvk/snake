@@ -25,29 +25,35 @@
 
 	<div id="game-container">
         
-        <h1>Snake</h1>
+        <h1 class="title">Snake</h1>
         
-		<div id="box">
+		<section id="game-box">
 			<div class="apple"></div>
 
 			<div id="snake-container">
 				<div class="snake head"></div>
 			</div>
-		</div>
+		</section>
 
-		<div id="highscore-box">
+		<section id="score-box">
 			<p>Highscore: <span class="highscore">0</span></p>
 			<p>Best score: <span class="bestscore">0</span></p>
-		</div>
+		</section>
+		
+		<section id="play-again--screen">
+			<h2 class="title">Game Over</h2>
+			<p class="play-again--message">&nbsp;</p>
+            <button class="play-again--button">Play Again?</button>
+		</section>
     
 	</div>
 
     <!--**************************************************-->
 
-    <!-- jQuery Version 1.11.3 -->
-    <script src="js/jquery-1.11.3.min.js"></script>
+    <!-- jQuery -->
+    <script src="js/jquery.min.js"></script>
 
-    <!-- Javascript -->
+    <!-- JavaScript -->
     <script src="js/script.js"></script>
 
 </body>

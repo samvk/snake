@@ -1,0 +1,29 @@
+// ==========================================================================
+// SCORE BOX
+// ==========================================================================//
+
+#score-box {
+    //base font-size
+    font-size: 1rem;
+    
+    //color
+    color: white;
+    
+    //design
+	text-shadow: 2px 2px 4px #000000;
+	
+	width: $boxSize;
+	margin-top: 12px;
+
+    p {
+        //text
+        font: .7em 'Press Start 2P', cursive;
+        
+		&:first-child {
+			float: left;
+		}
+		&:last-child {
+			float: right;
+		}
+	}
+}

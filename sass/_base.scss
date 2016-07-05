@@ -1,0 +1,76 @@
+// ==========================================================================
+// BASE RULES
+// ==========================================================================//
+
+$boxSize: 350px;
+
+body {
+	//color
+	background-color: #202020;
+}
+
+h1 {font-size: 140px; }
+
+h2 {font-size: 86px; }
+
+.title {
+	//text
+	font-family: 'Geo', sans-serif;
+	line-height: .8;
+	font-variant: small-caps;
+    
+    //color
+	color: #FFFFFF;
+	
+	//design
+	text-shadow: 2px 2px 4px #000000;
+	
+	//layout
+	text-align: center;
+}
+
+.subtitle {
+    font: 24px/1.9 'Press Start 2P', cursive;
+}
+
+#game-container {
+    //layout
+	position: absolute;
+	top: 46%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+button {
+    //text
+    font: 20px 'Press Start 2P', cursive;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    
+    //color
+    background-color: transparent;
+    
+    //design
+    opacity: 1;
+    box-shadow: 2px 2px 4px -2px #000000;
+    border: 2px solid #000000;
+    outline: 0;
+    cursor: pointer;
+    
+    //layout
+    padding: 0.5em;
+
+    &:hover {
+        //design
+        opacity: 0.88;
+        box-shadow: 2px 2px 3px -2px #000000;
+    }
+    
+    &:active {
+        //design
+        opacity: 0.88;
+        box-shadow: 2px 2px 1px -2px #000000;
+    }
+    
+    
+}
