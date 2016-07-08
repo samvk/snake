@@ -87,10 +87,16 @@ $(document).ready(function () {
                     "top": "+=" + snakeSize
                 });
             },
-            setDirection: function (inputKey) {
+            setDirection: function (input) {
                 var $head = $(".head");
-                switch (parseInt(inputKey.which, 10)) {
-                case 38: //"up"
+				
+				//convert input to number if keypress
+				input = parseInt(input.which, 10) || input;
+				
+                switch (input) {
+				case "up":
+                case 87:
+                case 38:
                 case 104:
                     this.newHeadPos = function () {
                         this.headDirection = "up";
@@ -99,7 +105,9 @@ $(document).ready(function () {
                         });
                     };
                     break;
-                case 40: //"down"
+				case "down":
+                case 83:
+                case 40:
                 case 98:
                 case 101:
                     this.newHeadPos = function () {
@@ -109,7 +117,9 @@ $(document).ready(function () {
                         });
                     };
                     break;
-                case 37: //"left"
+				case "left":
+                case 65:
+                case 37:
                 case 100:
                     this.newHeadPos = function () {
                         this.headDirection = "left";
@@ -118,7 +128,9 @@ $(document).ready(function () {
                         });
                     };
                     break;
-                case 39: //"right"
+				case "right":
+                case 68:
+                case 39:
                 case 102:
                     this.newHeadPos = function () {
                         this.headDirection = "right";
@@ -137,9 +149,16 @@ $(document).ready(function () {
         };
     }());
 
+	//move snake on keypress
     $(document).keydown(function (key) {
         moveHead.setDirection(key);
     });
+	
+	//move snake on arrow click (mobile only)
+	$(".arrow").click(function () {
+		var direction = $(this).data("direction");
+		moveHead.setDirection(direction);
+	});
 
     /**************** Eating an apple *******************/
     var eatAppleCheck = (function () {
@@ -234,7 +253,8 @@ $(document).ready(function () {
             }
 			
 			$(".play-again__message").text(message);
-            $("#play-again__screen").fadeIn(200);
+            $("#play-again__screen").fadeIn(150);
+            $("#arrow__screen").fadeOut(150);
             
             //so "enter" starts new game
             $(".play-again__button").focus();
@@ -313,6 +333,7 @@ $(document).ready(function () {
 	function newGame () {
 		isGameOver = false;
         $("#play-again__screen").fadeOut(150);
+		$("#arrow__screen").fadeIn(150);
 		
         //(re)set highscores
 		highscore = 0;

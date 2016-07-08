@@ -31,12 +31,16 @@ h2 {font-size: 86px; }
     font: 24px/1.9 'Press Start 2P', cursive;
 }
 
-#game-container {
+#all {
     //layout
 	position: absolute;
 	top: 46%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+}
+
+#game-container {
+	position: relative;
 }
 
 button {

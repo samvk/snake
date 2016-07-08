@@ -80,11 +80,15 @@ h2 {
   font: 24px/1.9 'Press Start 2P', cursive;
 }
 
-#game-container {
+#all {
   position: absolute;
   top: 46%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#game-container {
+  position: relative;
 }
 
 button {
@@ -163,7 +167,7 @@ button:active {
   white-space: nowrap;
   z-index: 200;
   position: absolute;
-  top: 38%;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -174,6 +178,37 @@ button:active {
   color: #FFFFFF;
   text-shadow: 1px 1px 2px #000000;
   padding-bottom: 1.4em;
+}
+
+.arrow {
+  font-size: 100px;
+  color: black;
+  opacity: 0.65;
+  z-index: 150;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+@media screen and (min-width: 769px) {
+  .arrow {
+    display: none;
+  }
+}
+
+.arrow[data-direction="up"] {
+  transform: translate(-50%, -140%);
+}
+
+.arrow[data-direction="down"] {
+  transform: translate(-50%, 40%);
+}
+
+.arrow[data-direction="left"] {
+  transform: translate(-150%, -50%);
+}
+
+.arrow[data-direction="right"] {
+  transform: translate(50%, -50%);
 }
 
 /*# sourceMappingURL=style.css.map */

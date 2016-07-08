@@ -1,0 +1,40 @@
+// ==========================================================================
+// ARROWS SCREEN
+// ==========================================================================//
+
+.arrow {
+	//text
+	font-size: 100px;
+	
+	//design
+	color: black;
+	opacity: 0.65;
+	
+	//layout
+	z-index: 150;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	
+	//hide arrows on desktop
+	@media screen and (min-width: 769px) {
+		//design
+		display: none;
+	}
+}
+
+.arrow[data-direction="up"] {
+	transform: translate(-50%, -140%);
+}
+
+.arrow[data-direction="down"] {
+	transform: translate(-50%, 40%);
+}
+
+.arrow[data-direction="left"] {
+	transform: translate(-150%, -50%);
+}
+
+.arrow[data-direction="right"] {
+	transform: translate(50%, -50%);
+}
