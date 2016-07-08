@@ -50,7 +50,7 @@ $(document).ready(function () {
         }
     }; 
 
-    /**************** Moving the belly *******************/
+    /**************** Moving the belly (automatically) *******************/
     var moveBelly = function () {
         //reverse loop so changes don't cascade.
         var $bellyReverse = $($(".belly").get().reverse());
@@ -70,7 +70,7 @@ $(document).ready(function () {
         });
     };
 
-    /******************* Moving the head ****************/
+    /******************* Moving the head (manually) ****************/
     var moveHead = (function () {
         function pushBelly() {
             //pushes old head position to the belly before moving
