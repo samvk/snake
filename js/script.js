@@ -4,20 +4,20 @@ $(document).ready(function () {
     "use strict";
     
     /********************** Globals *********************/
-	var isGameOver = false;
+	let isGameOver = false;
 	
-    var snakeSize = parseInt($(".snake").css("width"));
-    var boxSize = parseInt($("#game-box").css("width"));
+    const snakeSize = parseInt($(".snake").css("width"));
+    const boxSize = parseInt($("#game-box").css("width"));
 
-    var bellyPosArray = [];
+    let bellyPosArray = [];
 
-    var highscore = 0;
-    var bestscore = (function () {
+    let highscore = 0;
+    let bestscore = (function () {
         //get cookie
-        var name = "bestscore=";
-        var ca = document.cookie.split(";");
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
+        const name = "bestscore=";
+        const ca = document.cookie.split(";");
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
             while (c.charAt(0) === " ") {
                 c = c.substring(1);
             }
@@ -29,7 +29,7 @@ $(document).ready(function () {
     }());
 
     /************** Get snake/apple positions ************/
-    var position = {
+    const position = {
         headTop: function () {
             return parseInt($(".head").css("top"));
         },
@@ -51,9 +51,9 @@ $(document).ready(function () {
     }; 
 
     /**************** Moving the belly (automatically) *******************/
-    var moveBelly = function () {
+    const moveBelly = function () {
         //reverse loop so changes don't cascade.
-        var $bellyReverse = $($(".belly").get().reverse());
+        const $bellyReverse = $($(".belly").get().reverse());
         $bellyReverse.each(function (i, e) {
             var $self = $(e);
             var $prevSnake = $self.prev();
@@ -71,7 +71,7 @@ $(document).ready(function () {
     };
 
     /******************* Moving the head (manually) ****************/
-    var moveHead = (function () {
+    const moveHead = (function () {
         function pushBelly() {
             //pushes old head position to the belly before moving
             bellyPosArray.push([position.headTop(), position.headLeft()]);
@@ -156,24 +156,24 @@ $(document).ready(function () {
 	
 	//move snake on arrow click (mobile only)
 	$(".arrow").click(function () {
-		var direction = $(this).data("direction");
+		const direction = $(this).data("direction");
 		moveHead.setDirection(direction);
 	});
 
     /**************** Eating an apple *******************/
-    var eatAppleCheck = (function () {
+    const eatAppleCheck = (function () {
         function pushTail() {
             bellyPosArray.unshift([position.tailTop(), position.tailLeft()]);
         }
 
         function addTail() {
-            var $oldSnakeTail = $(".snake").last();
+            const $oldSnakeTail = $(".snake").last();
             $oldSnakeTail.after('<div class="snake belly"></div>');
-            var $newTail = $(".snake").last();
+            const $newTail = $(".snake").last();
 
-            var tailDirection = $oldSnakeTail.data("direction");
-            var oldTop = parseInt($oldSnakeTail.css("top"));
-            var oldLeft = parseInt($oldSnakeTail.css("left"));
+            const tailDirection = $oldSnakeTail.data("direction");
+            const oldTop = parseInt($oldSnakeTail.css("top"));
+            const oldLeft = parseInt($oldSnakeTail.css("left"));
             switch (tailDirection) {
             case "up":
                 $newTail.css({
@@ -207,15 +207,15 @@ $(document).ready(function () {
             function range() {
                 return Math.round((Math.floor(Math.random() * (boxSize - snakeSize)) / 10)) * 10;
             }
-            var appleTop = range();
-            var appleLeft = range();
+            const appleTop = range();
+            const appleLeft = range();
             $(".apple").css({
                 "top": appleTop,
                 "left": appleLeft
             });
             //prevent apple from falling under snake belly
             var applePos = [appleTop, appleLeft];
-            for (var i = 0; i < bellyPosArray.length; i++) {
+            for (let i = 0; i < bellyPosArray.length; i++) {
                 if (applePos.join() === bellyPosArray[i].join()) {
                     randomApple();
                     return;
@@ -237,11 +237,11 @@ $(document).ready(function () {
     }());
 
     /********************* Game over ********************/
-    var gameOverCheck = (function () {
+    const gameOverCheck = (function () {
         function setBestscoreCookie(cname, cvalue) {
-            var d = new Date();
+            const d = new Date();
             d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
-            var expires = "expires=" + d.toUTCString();
+            const expires = "expires=" + d.toUTCString();
             document.cookie = cname + "=" + cvalue + "; " + expires;
         }
 
@@ -271,8 +271,8 @@ $(document).ready(function () {
 
         //check if touching itself
         function checkTouch() {
-            var headPos = [position.headTop(), position.headLeft()];
-            for (var i = 0; i < bellyPosArray.length; i++) {
+            const headPos = [position.headTop(), position.headLeft()];
+            for (let i = 0; i < bellyPosArray.length; i++) {
                 if (headPos.join() === bellyPosArray[i].join()) {
                     gameOver("Stop hitting yourself!");
                     return;
@@ -298,8 +298,8 @@ $(document).ready(function () {
         $('<div class="snake head">').appendTo("#snake-container");
 
         //build bellies and add to array
-        var firstBellyTop = position.headTop() - snakeSize;
-        var secondBellyTop = position.headTop() - 2 * snakeSize;
+        const firstBellyTop = position.headTop() - snakeSize;
+        const secondBellyTop = position.headTop() - 2 * snakeSize;
         $('<div class="snake belly">').appendTo("#snake-container").css({"top": firstBellyTop, "left": position.headLeft});
         $('<div class="snake belly">').appendTo("#snake-container").css({"top": secondBellyTop, "left": position.headLeft});
 
@@ -310,7 +310,7 @@ $(document).ready(function () {
         //(re)set head direction
         moveHead.newHeadPos = function () {
             moveHead.headDirection = "down";
-            var $head = $(".head");
+            const $head = $(".head");
             $head.css({
                 "top": "+=" + snakeSize
             });
