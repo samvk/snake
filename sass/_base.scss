@@ -13,6 +13,11 @@ h1 {font-size: 140px; }
 
 h2 {font-size: 86px; }
 
+//default cursor for all HUD text
+h1,h2,p {
+	cursor: default;
+}
+
 .title {
 	//text
 	font-family: 'Geo', sans-serif;

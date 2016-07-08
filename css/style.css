@@ -67,6 +67,10 @@ h2 {
   font-size: 86px;
 }
 
+h1, h2, p {
+  cursor: default;
+}
+
 .title {
   font-family: 'Geo', sans-serif;
   line-height: .8;
@@ -182,7 +186,6 @@ button:active {
 
 .arrow {
   font-size: 100px;
-  color: black;
   opacity: 0.65;
   z-index: 150;
   position: absolute;
