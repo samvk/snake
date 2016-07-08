@@ -5,7 +5,7 @@
 $boxSize: 350px;
 
 body {
-	//color
+	//design
 	background-color: #202020;
 }
 
@@ -18,11 +18,9 @@ h2 {font-size: 86px; }
 	font-family: 'Geo', sans-serif;
 	line-height: .8;
 	font-variant: small-caps;
-    
-    //color
-	color: #FFFFFF;
 	
 	//design
+	color: #FFFFFF;
 	text-shadow: 2px 2px 4px #000000;
 	
 	//layout
@@ -47,10 +45,8 @@ button {
     text-transform: uppercase;
     letter-spacing: -0.5px;
     
-    //color
-    background-color: transparent;
-    
     //design
+	background-color: transparent;
     opacity: 1;
     box-shadow: 2px 2px 4px -2px #000000;
     border: 2px solid #000000;

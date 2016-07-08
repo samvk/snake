@@ -233,11 +233,11 @@ $(document).ready(function () {
                 setBestscoreCookie("bestscore", highscore);
             }
 			
-			$(".play-again--message").text(message);
-            $("#play-again--screen").fadeIn(200);
+			$(".play-again__message").text(message);
+            $("#play-again__screen").fadeIn(200);
             
             //so "enter" starts new game
-            $(".play-again--button").focus();
+            $(".play-again__button").focus();
 			
 			isGameOver = true;
         }
@@ -312,7 +312,7 @@ $(document).ready(function () {
     /**************** Start new game ***************/	
 	function newGame () {
 		isGameOver = false;
-        $("#play-again--screen").fadeOut(150);
+        $("#play-again__screen").fadeOut(150);
 		
         //(re)set highscores
 		highscore = 0;
@@ -333,7 +333,7 @@ $(document).ready(function () {
 	newGame();
 	
     /***** Play Again? screen (starting new game) *****/
-    $(".play-again--button").click(function(){
+    $(".play-again__button").click(function(){
         if (isGameOver) { //double-check that game really is over
 			newGame();
 		}

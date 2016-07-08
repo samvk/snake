@@ -158,7 +158,7 @@ button:active {
   float: right;
 }
 
-#play-again--screen {
+#play-again__screen {
   display: none;
   white-space: nowrap;
   z-index: 200;
@@ -169,7 +169,7 @@ button:active {
   text-align: center;
 }
 
-.play-again--message {
+.play-again__message {
   font: 18px 'Geo', cursive;
   color: #FFFFFF;
   text-shadow: 1px 1px 2px #000000;

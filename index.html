@@ -6,11 +6,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Play the retro snake game.">
     <meta name="author" content="Sam Kauffman">
+    <meta name="description" content="Play the retro snake game.">
+    <meta name="theme-color" content="#2D655F">
 
     <title>Snake</title>
-	<link rel="icon" href="img/icon/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" href="img/icon/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="img/icon/favicon-16.png" sizes="16x16">
 
     <!-- Custom Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Geo' rel='stylesheet' type='text/css'>
@@ -28,8 +30,8 @@
         <h1 class="title">Snake</h1>
         
 		<section id="game-box">
-			<div class="apple"></div>
-
+            <div class="apple"></div>
+            
 			<div id="snake-container">
 				<div class="snake head"></div>
 			</div>
@@ -40,18 +42,19 @@
 			<p>Best score: <span class="bestscore">0</span></p>
 		</section>
 		
-		<section id="play-again--screen">
+		<section id="play-again__screen">
 			<h2 class="title">Game Over</h2>
-			<p class="play-again--message">&nbsp;</p>
-            <button class="play-again--button">Play Again?</button>
+			<p class="play-again__message">&nbsp;</p>
+            <button class="play-again__button">Play Again?</button>
 		</section>
     
 	</div>
 
-    <!--**************************************************-->
+<!--**************************************************-->
 
     <!-- jQuery -->
-    <script src="js/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write("<script src='js/jquery.min.js'><\/script>")</script>
 
     <!-- JavaScript -->
     <script src="js/script.js"></script>
