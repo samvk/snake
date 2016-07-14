@@ -187,6 +187,7 @@ button:active {
 .arrow {
   font-size: 100px;
   opacity: 0.65;
+  cursor: pointer;
   z-index: 150;
   position: absolute;
   top: 50%;
