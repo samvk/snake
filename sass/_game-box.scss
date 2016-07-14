@@ -3,17 +3,16 @@
 // ==========================================================================//
 
 #game-box {
-    
 	$darkgreen: #2D655F;
-    
+
     //color
     background-color: $darkgreen;
-    
+
     //design
     border: 1px solid $darkgreen;
     box-shadow: 2px 2px 8px #000000;
     overflow: hidden;
-    
+
     //layout
     position: relative;
     width: $boxSize;
@@ -23,10 +22,10 @@
 .snake {
     //color
     background-color: #FFFFFF;
-    
+
     //design
     border-radius: 50%;
-    
+
     //layout
 	position: absolute;
 	width: 10px;
@@ -42,15 +41,15 @@
 .apple {
 	//color
 	background-color: red;
-	
+
     //design
 	border-radius: 10%;
-    
+
     //layout
     position: absolute;
     width: 10px;
     height: 10px;
-    
+
     //starting position
     top: 100px;
     left: 20px;
