@@ -1,3 +1,4 @@
+/*jshint esversion: 6*/
 /*global $, document, Image, window, setTimeout, setInterval, clearInterval, alert*/
 
 $(document).ready(function () {
@@ -28,27 +29,26 @@ $(document).ready(function () {
         return 0;
     }());
 
+    
+    
     /************** Get snake/apple positions ************/
-    const position = {
-        headTop: function () {
-            return parseInt($(".head").css("top"));
-        },
-        headLeft: function () {
-            return parseInt($(".head").css("left"));
-        },
-        appleTop: function () {
-            return parseInt($(".apple").css("top"));
-        },
-        appleLeft: function () {
-            return parseInt($(".apple").css("left"));
-        },
-        tailTop: function () {
-            return parseInt($(".snake").last().css("top"));
-        },
-        tailLeft: function () {
-            return parseInt($(".snake").last().css("left"));
+    
+    const position = (function () {
+        function getPos(el, pos) {
+            return function() {
+                return parseInt($("." + el).last().css(pos));
+            };
         }
-    }; 
+
+        return {
+            headTop: getPos("head", "top"),
+            headLeft: getPos("head", "left"),
+            appleTop: getPos("apple", "top"),
+            appleLeft: getPos("apple", "left"),
+            tailTop: getPos("snake", "top"),
+            tailLeft: getPos("snake", "left")
+        };
+    }());
 
     /**************** Moving the belly (automatically) *******************/
     const moveBelly = function () {
@@ -97,7 +97,6 @@ $(document).ready(function () {
 				case "up":
                 case 87:
                 case 38:
-                case 104:
                     this.newHeadPos = function () {
                         this.headDirection = "up";
                         $head.css({
@@ -108,8 +107,6 @@ $(document).ready(function () {
 				case "down":
                 case 83:
                 case 40:
-                case 98:
-                case 101:
                     this.newHeadPos = function () {
                         this.headDirection = "down";
                         $head.css({
@@ -120,7 +117,6 @@ $(document).ready(function () {
 				case "left":
                 case 65:
                 case 37:
-                case 100:
                     this.newHeadPos = function () {
                         this.headDirection = "left";
                         $head.css({
@@ -131,7 +127,6 @@ $(document).ready(function () {
 				case "right":
                 case 68:
                 case 39:
-                case 102:
                     this.newHeadPos = function () {
                         this.headDirection = "right";
                         $head.css({
@@ -255,9 +250,8 @@ $(document).ready(function () {
 			$(".play-again__message").text(message);
             $("#play-again__screen").fadeIn(150);
             $("#arrow__screen").fadeOut(150);
-            
-            //so "enter" starts new game
-            $(".play-again__button").focus();
+
+            $(".play-again__button").focus(); //"enter" starts new game
 			
 			isGameOver = true;
         }
