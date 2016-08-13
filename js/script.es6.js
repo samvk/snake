@@ -219,14 +219,12 @@ $(document).ready(function () {
 
         }
 
-        return {
-            init: function () {
-                if (position.headTop() === position.appleTop() && position.headLeft() === position.appleLeft()) {
-                    randomApple();
-                    addTail();
-                    highscore += 10;
-                    $(".highscore").text(highscore);
-                }
+        return function () {
+            if (position.headTop() === position.appleTop() && position.headLeft() === position.appleLeft()) {
+                randomApple();
+                addTail();
+                highscore += 10;
+                $(".highscore").text(highscore);
             }
         };
     }());
@@ -275,11 +273,9 @@ $(document).ready(function () {
 
         }
 
-        return {
-            init: function () {
-                checkBounds();
-                checkTouch();
-            }
+        return function () {
+            checkBounds();
+            checkTouch();
         };
     }());
     
@@ -319,8 +315,8 @@ $(document).ready(function () {
     function gameplay() {
         moveBelly();
         moveHead.init();
-        eatAppleCheck.init();
-        gameOverCheck.init();
+        eatAppleCheck();
+        gameOverCheck();
     }
     
     /**************** Start new game ***************/	
