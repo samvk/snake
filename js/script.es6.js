@@ -55,8 +55,8 @@ $(document).ready(function () {
         //reverse loop so changes don't cascade.
         const $bellyReverse = $($(".belly").get().reverse());
         $bellyReverse.each(function (i, e) {
-            var $self = $(e);
-            var $prevSnake = $self.prev();
+            const $self = $(e);
+            const $prevSnake = $self.prev();
 
             //set each belly to its previous' position.
             $self.css({
@@ -65,13 +65,16 @@ $(document).ready(function () {
             });
 
             //set each belly to its previous' data-direction.
-            var prevDirection = $prevSnake.data("direction");
+            const prevDirection = $prevSnake.data("direction");
             $self.data("direction", prevDirection);
         });
     };
 
     /******************* Moving the head (manually) ****************/
     const moveHead = (function () {
+        let headDirection = "down";
+        let newHeadPos;
+
         function pushBelly() {
             //pushes old head position to the belly before moving
             bellyPosArray.push([position.headTop(), position.headLeft()]);
@@ -79,67 +82,49 @@ $(document).ready(function () {
         }
 
         return {
-            headDirection: "down",
-            newHeadPos: function () {
-                this.headDirection = "down";
-                var $head = $(".head");
-                $head.css({
-                    "top": "+=" + snakeSize
-                });
+            setNewHeadPos: function (dir) {
+                const data = {
+                    up: {pos: "top", exp: "-=" },
+                    down: {pos: "top", exp: "+=" },
+                    left: {pos: "left", exp: "-=" },
+                    right: {pos: "left", exp: "+=" }
+                };
+
+                newHeadPos = function() {
+                    headDirection = dir;
+                    $(".head").css(data[dir].pos, data[dir].exp + snakeSize);
+                };
             },
             setDirection: function (input) {
-                var $head = $(".head");
-				
-				//convert input to number if keypress
-				input = parseInt(input.which, 10) || input;
-				
+                input = parseInt(input.which, 10) || input; //convert input to number if keypress
+
                 switch (input) {
 				case "up":
                 case 87:
                 case 38:
-                    this.newHeadPos = function () {
-                        this.headDirection = "up";
-                        $head.css({
-                            "top": "-=" + snakeSize
-                        });
-                    };
+                    this.setNewHeadPos("up");
                     break;
 				case "down":
                 case 83:
                 case 40:
-                    this.newHeadPos = function () {
-                        this.headDirection = "down";
-                        $head.css({
-                            "top": "+=" + snakeSize
-                        });
-                    };
+                    this.setNewHeadPos("down");
                     break;
 				case "left":
                 case 65:
                 case 37:
-                    this.newHeadPos = function () {
-                        this.headDirection = "left";
-                        $head.css({
-                            "left": "-=" + snakeSize
-                        });
-                    };
+                    this.setNewHeadPos("left");
                     break;
 				case "right":
                 case 68:
                 case 39:
-                    this.newHeadPos = function () {
-                        this.headDirection = "right";
-                        $head.css({
-                            "left": "+=" + snakeSize
-                        });
-                    };
+                    this.setNewHeadPos("right");
                     break;
                 }
             },
             init: function () {
                 pushBelly();
-                this.newHeadPos();
-				$(".head").data("direction", this.headDirection);
+                newHeadPos();
+				$(".head").data("direction", headDirection);
             }
         };
     }());
@@ -209,7 +194,7 @@ $(document).ready(function () {
                 "left": appleLeft
             });
             //prevent apple from falling under snake belly
-            var applePos = [appleTop, appleLeft];
+            const applePos = [appleTop, appleLeft];
             for (let i = 0; i < bellyPosArray.length; i++) {
                 if (applePos.join() === bellyPosArray[i].join()) {
                     randomApple();
@@ -298,13 +283,7 @@ $(document).ready(function () {
         bellyPosArray.push([secondBellyTop, position.headLeft()]);
         
         //(re)set head direction
-        moveHead.newHeadPos = function () {
-            moveHead.headDirection = "down";
-            const $head = $(".head");
-            $head.css({
-                "top": "+=" + snakeSize
-            });
-        };
+        moveHead.setNewHeadPos("down");
     }   
 
     /********************************************/
