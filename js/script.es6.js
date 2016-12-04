@@ -229,7 +229,7 @@ $(document).ready(function () {
                 bestscore = highscore;
                 setBestscoreCookie("bestscore", highscore);
             }
-			
+
 			$(".play-again__message").text(message);
             $("#play-again__screen").fadeIn(150);
             $("#arrow__screen").fadeOut(150);
