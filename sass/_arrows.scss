@@ -24,17 +24,17 @@
 }
 
 .arrow[data-direction="up"] {
-	transform(translate(-50%, -140%));
+	@include transform(translate(-50%, -140%));
 }
 
 .arrow[data-direction="down"] {
-	transform(translate(-50%, 40%));
+	@include transform(translate(-50%, 40%));
 }
 
 .arrow[data-direction="left"] {
-	transform(translate(-150%, -50%));
+	@include transform(translate(-150%, -50%));
 }
 
 .arrow[data-direction="right"] {
-	transform(translate(50%, -50%));
+	@include transform(translate(50%, -50%));
 }

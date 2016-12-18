@@ -41,7 +41,7 @@ h1,h2,p {
 	position: absolute;
 	bottom: 54%;
 	right: 50%;
-	transform(translate(50%, 50%));
+	@include transform(translate(50%, 50%));
 }
 
 #game-container {
