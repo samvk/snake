@@ -4,9 +4,12 @@
 
 $boxSize: 350px;
 
+html { height: 100%; }
+
 body {
 	//design
 	background-color: #202020;
+	background-image: repeating-linear-gradient(transparent 0, transparent 2px, rgba(0,0,0,0.55) 0, rgba(0,0,0,0.15) 4px);
 }
 
 h1 {font-size: 140px; }
